@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-04-09T17:16:10.583401-04:00",
+  "root": "/Users/taurus_ai/Documents/HEDERA/bizflow/business-collab-outreach/yqg-digital/audit/deploy",
+  "branch": "main",
+  "base_ref": "origin/main",
+  "prefix": {
+    "file_count": 2,
+    "hubs": []
+  },
+  "delta": {
+    "changed": [
+      {
+        "path": ".gitignore",
+        "hash": "56537ebe03160a28fdb6e59ae18f408d6f8aba609df73c45917c9358fd3bad52",
+        "size": 8,
+        "status": "untracked"
+      },
+      {
+        "path": "attached_assets 2/06_x402_API_Monetization_1763959659043.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/07_x402_Offline_Settlement_1763959659043.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/07_x402_Payment_Integration_1763959659043.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/AI_TRUST_SYSTEM_1763948178183.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/ARCHITECTURE_SUMMARY_1763947763986.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/CBDC_TECH_ARCHITECTURE.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/FINTECH_HACKATHON_SOLUTION_TEMPLATE_1763947736233.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/HEDERA_SDK_COMPARISON_MATRIX_1763945422121.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/IMPLEMENTATION_GUIDE_1763947796995.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/IMPLEMENTATION_GUIDE_1763947896640.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/PITCH_DECK_OUTLINE_1763942479732.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/Q-Grid.IN Architecture.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/Q-Grid.NET_Quantum-Resistant Blockchain Platform on Hedera.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/Q-Grid_CBDC_CLI_Pay_Grid.py",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/QUANTUM_HEDERA_CBDC_REVOLUTION_1763947736232.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/QUANTUM_RUPEE_TECHNICAL_WHITEPAPER_1763948149423.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/RBI_COMPLIANT_ARCHITECTURE_DESIGN_1763947736232.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/T-KYC_Competitive_Analysis_OSINT_1763959659029.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/TOKENIZED_KYC_SOLUTION_1763947796996.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/TOKENIZED_KYC_SOLUTION_1763947896640.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/VISUAL_DIAGRAMS_1763947796969.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/VISUAL_DIAGRAMS_1763947896622.md",
+        "status": "modified"
+      },
+      {
+        "path": "attached_assets 2/ZKT-KYC pitch deck.md",
+        "status": "modified"
+      },
+      {
+        "path": "index.html",
+        "hash": "e191d7258681ae5018ade20a536e55d7ee31ac4a63dbee77f2093a6eb59af5e1",
+        "size": 20489,
+        "status": "untracked"
+      },
+      {
+        "path": "next.config.ts",
+        "status": "modified"
+      },
+      {
+        "path": "package-lock.json",
+        "status": "modified"
+      },
+      {
+        "path": "package.json",
+        "status": "modified"
+      },
+      {
+        "path": "src/app/globals.css",
+        "status": "modified"
+      },
+      {
+        "path": "src/app/layout.tsx",
+        "status": "modified"
+      },
+      {
+        "path": "src/trpc/react.tsx",
+        "status": "modified"
+      }
+    ],
+    "risk_files": [],
+    "recent_events": [],
+    "next_steps": [
+      "Run tests covering changed files before handoff."
+    ],
+    "open_questions": [
+      "Live watch state was unavailable; timeline may be incomplete.",
+      "Dependency graph context was unavailable; risk files may be incomplete."
+    ]
+  },
+  "prefix_hash": "16cf987defe955911e4b89d4ebc2351970414612581d770fca176126b30557a8",
+  "delta_hash": "4f0de12711d60acec629cb8eb3e8abcf58b86e60a6ade8b52ee1e7591910c36f",
+  "combined_hash": "50e57c84911b94fd65c945f6b2601b5a7ab9d8265b3234b6f0b8b37276e815e8",
+  "metrics": {
+    "prefix_bytes": 26,
+    "delta_bytes": 2868,
+    "total_bytes": 2894,
+    "unchanged_bytes": 0,
+    "reuse_ratio": 0,
+    "prefix_reused": false,
+    "delta_reused": false
+  },
+  "changed_files": [
+    ".gitignore",
+    "attached_assets 2/06_x402_API_Monetization_1763959659043.md",
+    "attached_assets 2/07_x402_Offline_Settlement_1763959659043.md",
+    "attached_assets 2/07_x402_Payment_Integration_1763959659043.md",
+    "attached_assets 2/AI_TRUST_SYSTEM_1763948178183.md",
+    "attached_assets 2/ARCHITECTURE_SUMMARY_1763947763986.md",
+    "attached_assets 2/CBDC_TECH_ARCHITECTURE.md",
+    "attached_assets 2/FINTECH_HACKATHON_SOLUTION_TEMPLATE_1763947736233.md",
+    "attached_assets 2/HEDERA_SDK_COMPARISON_MATRIX_1763945422121.md",
+    "attached_assets 2/IMPLEMENTATION_GUIDE_1763947796995.md",
+    "attached_assets 2/IMPLEMENTATION_GUIDE_1763947896640.md",
+    "attached_assets 2/PITCH_DECK_OUTLINE_1763942479732.md",
+    "attached_assets 2/Q-Grid.IN Architecture.md",
+    "attached_assets 2/Q-Grid.NET_Quantum-Resistant Blockchain Platform on Hedera.md",
+    "attached_assets 2/Q-Grid_CBDC_CLI_Pay_Grid.py",
+    "attached_assets 2/QUANTUM_HEDERA_CBDC_REVOLUTION_1763947736232.md",
+    "attached_assets 2/QUANTUM_RUPEE_TECHNICAL_WHITEPAPER_1763948149423.md",
+    "attached_assets 2/RBI_COMPLIANT_ARCHITECTURE_DESIGN_1763947736232.md",
+    "attached_assets 2/T-KYC_Competitive_Analysis_OSINT_1763959659029.md",
+    "attached_assets 2/TOKENIZED_KYC_SOLUTION_1763947796996.md",
+    "attached_assets 2/TOKENIZED_KYC_SOLUTION_1763947896640.md",
+    "attached_assets 2/VISUAL_DIAGRAMS_1763947796969.md",
+    "attached_assets 2/VISUAL_DIAGRAMS_1763947896622.md",
+    "attached_assets 2/ZKT-KYC pitch deck.md",
+    "index.html",
+    "next.config.ts",
+    "package-lock.json",
+    "package.json",
+    "src/app/globals.css",
+    "src/app/layout.tsx",
+    "src/trpc/react.tsx"
+  ],
+  "risk_files": [],
+  "recent_events": [],
+  "next_steps": [
+    "Run tests covering changed files before handoff."
+  ],
+  "open_questions": [
+    "Live watch state was unavailable; timeline may be incomplete.",
+    "Dependency graph context was unavailable; risk files may be incomplete."
+  ]
+}
