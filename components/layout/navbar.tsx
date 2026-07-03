@@ -78,6 +78,12 @@ export const Navbar = () => {
 
                 <SheetFooter className="flex-col items-start justify-start sm:flex-col">
                   <Separator className="mb-2" />
+                  <Button className="w-full" onClick={() => setIsOpen(false)} asChild>
+                    <Link href="/#contact">
+                      Request Demo
+                      <ChevronRightIcon />
+                    </Link>
+                  </Button>
                   <ToggleTheme />
                 </SheetFooter>
               </SheetContent>

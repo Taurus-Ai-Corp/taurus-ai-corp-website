@@ -188,6 +188,7 @@
 /* Long-form article typography (blog, legal pages) */
 .article {
   line-height: 1.75;
+  overflow-wrap: break-word;
 }
 .article h1 {
   font-size: 2.25rem;
