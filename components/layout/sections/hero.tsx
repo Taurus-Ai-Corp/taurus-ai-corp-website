@@ -12,7 +12,7 @@ export const HeroSection = () => {
         <BackgroundBeamsWithCollision>
           <div className="space-y-8 pb-8 text-center lg:pb-20">
             <Badge variant="outline" className="mono-label bg-muted py-2 text-xs">
-              <span className="text-primary">///</span>
+              <span className="text-primary">{"///"}</span>
               <span className="ml-2">Quantum-Safe Enterprise AI</span>
             </Badge>
             <div className="mx-auto max-w-(--breakpoint-md) text-center text-4xl font-bold md:text-6xl">
