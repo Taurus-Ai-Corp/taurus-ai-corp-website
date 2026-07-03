@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { CheckIcon, ChevronRight } from "lucide-react";
 
@@ -13,7 +12,7 @@ export const HeroSection = () => {
         <BackgroundBeamsWithCollision>
           <div className="space-y-8 pb-8 text-center lg:pb-20">
             <Badge variant="outline" className="mono-label bg-muted py-2 text-xs">
-              <span className="text-primary">{"///"}</span>
+              <span className="text-primary">///</span>
               <span className="ml-2">Quantum-Safe Enterprise AI</span>
             </Badge>
             <div className="mx-auto max-w-(--breakpoint-md) text-center text-4xl font-bold md:text-6xl">
@@ -57,21 +56,6 @@ export const HeroSection = () => {
             </div>
           </div>
         </BackgroundBeamsWithCollision>
-
-        <div className="group relative">
-          {/* blur effect */}
-          <div className="bg-primary/40 absolute top-2 left-1/2 mx-auto h-24 w-[90%] -translate-x-1/2 transform rounded-full blur-3xl lg:-top-8 lg:h-80"></div>
-          {/* blur effect */}
-
-          <Image
-            width={1240}
-            height={1200}
-            className="relative mx-auto flex w-full items-center mask-b-from-20% mask-b-to-90% leading-none"
-            src="/images/taurus-ecosystem.png"
-            alt="Taurus AI Corp platform ecosystem"
-            unoptimized
-          />
-        </div>
       </div>
     </section>
   );
