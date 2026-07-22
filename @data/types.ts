@@ -13,6 +13,8 @@ export type SubProduct = {
   href?: string;
   external?: boolean;
   icon?: string;
+  /** Optional tile image under /public (e.g. /images/platforms/core-scan.jpg) */
+  image?: string;
 };
 
 export type PlatformFamily = {
@@ -24,5 +26,7 @@ export type PlatformFamily = {
   lead: boolean;
   href: string;
   icon: string;
+  /** Optional family hero under /public */
+  image?: string;
   subProducts: SubProduct[];
 };

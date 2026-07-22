@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 
@@ -26,10 +27,25 @@ export function SubProductCard({ product, muted }: SubProductCardProps) {
   const body = (
     <Card
       className={cn(
-        "h-full rounded-none border transition-colors",
+        "h-full overflow-hidden rounded-none border py-0 transition-colors",
         isMuted ? "bg-muted/40 opacity-90" : "bg-muted group hover:border-primary/40"
       )}>
-      <CardHeader className="gap-3">
+      {product.image ? (
+        <div className="relative aspect-[16/10] w-full overflow-hidden border-b">
+          <Image
+            src={product.image}
+            alt=""
+            fill
+            className={cn(
+              "object-cover transition-transform duration-500",
+              !isMuted && "group-hover:scale-[1.03]"
+            )}
+            sizes="(max-width: 640px) 100vw, 25vw"
+          />
+          <div className="from-background/80 absolute inset-0 bg-gradient-to-t to-transparent" />
+        </div>
+      ) : null}
+      <CardHeader className="gap-3 py-6">
         <div className="flex items-start justify-between gap-3">
           <div
             className={cn(
@@ -42,7 +58,10 @@ export function SubProductCard({ product, muted }: SubProductCardProps) {
           </div>
           <Badge
             variant="outline"
-            className={cn("mono-label text-[10px] uppercase tracking-wide", stageBadgeClass[product.stage])}>
+            className={cn(
+              "mono-label text-[10px] uppercase tracking-wide",
+              stageBadgeClass[product.stage]
+            )}>
             {stageLabel(product.stage)}
           </Badge>
         </div>
@@ -56,7 +75,7 @@ export function SubProductCard({ product, muted }: SubProductCardProps) {
           <p className="text-primary/90 text-sm font-medium">{product.tagline}</p>
         </div>
       </CardHeader>
-      <CardContent className="text-muted-foreground text-sm leading-relaxed">
+      <CardContent className="text-muted-foreground pb-6 text-sm leading-relaxed">
         {product.description}
       </CardContent>
     </Card>

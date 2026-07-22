@@ -13,6 +13,7 @@ export const grideraFamily: PlatformFamily = {
   lead: true,
   href: "https://q-grid.net",
   icon: "ShieldCheck",
+  image: "/images/platforms/family-gridera.jpg",
   subProducts: [
     {
       id: "scan",
@@ -23,7 +24,8 @@ export const grideraFamily: PlatformFamily = {
       stage: "production",
       href: "https://q-grid.net/scan",
       external: true,
-      icon: "Radar"
+      icon: "Radar",
+      image: "/images/platforms/core-scan.jpg"
     },
     {
       id: "comply",
@@ -34,7 +36,8 @@ export const grideraFamily: PlatformFamily = {
       stage: "production",
       href: "https://eu.q-grid.net",
       external: true,
-      icon: "FileCheck"
+      icon: "FileCheck",
+      image: "/images/platforms/core-comply.jpg"
     },
     {
       id: "guard",
@@ -45,7 +48,8 @@ export const grideraFamily: PlatformFamily = {
       stage: "production",
       href: "https://eu.q-grid.net/guard",
       external: true,
-      icon: "Shield"
+      icon: "Shield",
+      image: "/images/platforms/core-guard.jpg"
     },
     {
       id: "migrate",
@@ -56,7 +60,8 @@ export const grideraFamily: PlatformFamily = {
       stage: "production",
       href: "https://eu.q-grid.net/dashboard/security",
       external: true,
-      icon: "GitBranch"
+      icon: "GitBranch",
+      image: "/images/platforms/core-migrate.jpg"
     },
     {
       id: "lend",

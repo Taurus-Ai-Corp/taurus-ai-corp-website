@@ -13,6 +13,7 @@ export const sentinelFamily: PlatformFamily = {
   lead: false,
   href: "https://huggingface.co/spaces/Q-GRID-NET/GLOBAL_BIO_FOUNDRY",
   icon: "Activity",
+  image: "/images/platforms/family-sentinel.jpg",
   subProducts: [
     {
       id: "headset",

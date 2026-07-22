@@ -1,6 +1,6 @@
 /**
  * NEXUS — marketing / creative / ops studio.
- * NeoVibe brand is retired; OpsFlow absorbs BizFlow naming on the public site.
+ * Creative studio modules live under NEXUS; OpsFlow is the ops module name.
  */
 import type { PlatformFamily } from "./types";
 
@@ -13,6 +13,7 @@ export const nexusFamily: PlatformFamily = {
   lead: false,
   href: "https://nexus.taurusai.io",
   icon: "Sparkles",
+  image: "/images/platforms/family-nexus.jpg",
   subProducts: [
     {
       id: "marketing-studio",
@@ -39,7 +40,7 @@ export const nexusFamily: PlatformFamily = {
       name: "OpsFlow",
       tagline: "Agentic ops and MCP tools",
       description:
-        "Workflow automation and multi-agent ops (replaces public BizFlow naming on this site).",
+        "Workflow automation and multi-agent ops under the NEXUS family (OpsFlow naming).",
       stage: "beta",
       icon: "Workflow"
     },
