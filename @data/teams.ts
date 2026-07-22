@@ -38,11 +38,16 @@ export const teamList: TeamProps[] = [
     socialNetworks: []
   },
   {
-    initials: "MM",
-    firstName: "Midhun",
-    lastName: "Madhu",
-    positions: ["Tech Lead"],
-    bio: "Full-stack architect with expertise in distributed systems and blockchain technology. Led development of quantum-resistant payment protocols.",
-    socialNetworks: []
+    initials: "TKA",
+    firstName: "Tejas Karan",
+    lastName: "Agrawal",
+    positions: ["Performance & Growth Marketer"],
+    bio: "Performance and growth marketer who ships production AI. Based in Toronto, ON — driving GTM, acquisition, and growth systems that go live, not deck-only.",
+    socialNetworks: [
+      { name: "Website", url: "https://tejaskaranagrawal.com/" },
+      { name: "LinkedIn", url: "https://www.linkedin.com/in/tejas-karan-agrawal" },
+      { name: "GitHub", url: "https://github.com/floating-astronaut" },
+      { name: "Email", url: "mailto:tejaskagrawalgwl@gmail.com" }
+    ]
   }
 ];

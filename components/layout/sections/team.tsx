@@ -1,10 +1,12 @@
 import React from "react";
+import Link from "next/link";
 
 import { teamList } from "@/@data/teams";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
@@ -20,25 +22,43 @@ export function TeamSection() {
         description="Visionary leaders driving quantum-safe innovation in enterprise AI."
       />
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4">
-        {teamList.map(({ initials, firstName, lastName, positions, bio }, index) => (
-          <Card key={index} className="bg-muted flex h-full flex-col">
-            <CardHeader>
-              <div className="bg-primary/10 text-primary font-heading mb-4 flex size-16 items-center justify-center border text-2xl font-bold">
-                {initials}
-              </div>
-              <CardTitle className="text-lg">
-                {firstName}
-                <span className="text-primary ml-1">{lastName}</span>
-              </CardTitle>
-              <CardDescription className="mono-label text-xs">
-                {positions.join(", ")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-relaxed">
-              {bio}
-            </CardContent>
-          </Card>
-        ))}
+        {teamList.map(
+          ({ initials, firstName, lastName, positions, bio, socialNetworks }, index) => (
+            <Card key={index} className="bg-muted flex h-full flex-col">
+              <CardHeader>
+                <div className="bg-primary/10 text-primary font-heading mb-4 flex size-16 items-center justify-center border text-xl font-bold">
+                  {initials}
+                </div>
+                <CardTitle className="text-lg">
+                  {firstName}
+                  <span className="text-primary ml-1">{lastName}</span>
+                </CardTitle>
+                <CardDescription className="mono-label text-xs">
+                  {positions.join(", ")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-muted-foreground flex-1 text-sm leading-relaxed">
+                {bio}
+              </CardContent>
+              {socialNetworks.length > 0 ? (
+                <CardFooter className="flex flex-wrap gap-3 pt-0">
+                  {socialNetworks.map((social) => (
+                    <Link
+                      key={social.url}
+                      href={social.url}
+                      target={social.url.startsWith("mailto:") ? undefined : "_blank"}
+                      rel={
+                        social.url.startsWith("mailto:") ? undefined : "noopener noreferrer"
+                      }
+                      className="text-primary mono-label text-xs hover:underline">
+                      {social.name}
+                    </Link>
+                  ))}
+                </CardFooter>
+              ) : null}
+            </Card>
+          )
+        )}
       </div>
     </SectionContainer>
   );
