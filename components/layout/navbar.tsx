@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { ChevronRightIcon, Menu } from "lucide-react";
+import { ChevronRightIcon, ExternalLink, Menu } from "lucide-react";
 
 import { productList, routeList } from "@/@data/navbar";
 
@@ -63,6 +63,18 @@ export const Navbar = () => {
                       className="justify-start text-base">
                       <Link href="/#platforms">Platforms</Link>
                     </Button>
+                    {productList.map(({ title, href }) => (
+                      <Button
+                        key={title}
+                        onClick={() => setIsOpen(false)}
+                        asChild
+                        variant="ghost"
+                        className="text-muted-foreground justify-start text-sm">
+                        <Link href={href} target="_blank" rel="noopener noreferrer">
+                          {title}
+                        </Link>
+                      </Button>
+                    ))}
                     {routeList.map(({ href, label }) => (
                       <Button
                         key={href}
@@ -98,19 +110,27 @@ export const Navbar = () => {
                   Platforms
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-80 gap-4">
+                  <div className="w-96 gap-4">
                     <ul className="flex flex-col">
-                      {productList.map(({ title, description, icon }) => (
+                      {productList.map(({ title, description, icon, href, lead }) => (
                         <li key={title}>
                           <Link
-                            href="/#platforms"
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="hover:bg-muted flex items-center gap-6 p-4 text-sm">
                             <div className="bg-primary/20 ring-primary/10 mb-4 flex size-8 items-center justify-center p-2 ring-8">
                               <Icon name={icon} className="text-primary size-5 shrink-0" />
                             </div>
-                            <div>
-                              <p className="text-foreground mb-1 leading-none font-semibold">
+                            <div className="min-w-0 flex-1">
+                              <p className="text-foreground mb-1 flex items-center gap-2 leading-none font-semibold">
                                 {title}
+                                {lead ? (
+                                  <span className="text-primary mono-label text-[10px] uppercase">
+                                    Lead
+                                  </span>
+                                ) : null}
+                                <ExternalLink className="text-muted-foreground size-3" />
                               </p>
                               <p className="text-muted-foreground line-clamp-2">{description}</p>
                             </div>
@@ -118,6 +138,13 @@ export const Navbar = () => {
                         </li>
                       ))}
                     </ul>
+                    <div className="border-t p-3">
+                      <Link
+                        href="/#platforms"
+                        className="text-primary text-sm font-medium hover:underline">
+                        Compare all platforms →
+                      </Link>
+                    </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
