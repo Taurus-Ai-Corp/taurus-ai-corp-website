@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Github, Globe2, Mail } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,22 +54,6 @@ export const ContactSection = () => {
       <section className="mx-auto grid max-w-screen-lg grid-cols-1 gap-6 md:grid-cols-2">
         <div>
           <div className="flex flex-col gap-6 *:border *:p-6">
-            <div className="bg-muted">
-              <div className="mb-4 flex items-center gap-3">
-                <Building2 className="text-primary size-4" />
-                <div className="font-bold">Headquarters</div>
-              </div>
-              <div className="text-muted-foreground">Ontario, Canada</div>
-            </div>
-
-            <div className="bg-muted">
-              <div className="mb-4 flex items-center gap-3">
-                <Globe2 className="text-primary size-4" />
-                <div className="font-bold">Global Offices</div>
-              </div>
-              <div className="text-muted-foreground">Dubai, UAE · Wyoming, USA · India</div>
-            </div>
-
             <div className="bg-muted">
               <div className="mb-4 flex items-center gap-3">
                 <Mail className="text-primary size-4" />

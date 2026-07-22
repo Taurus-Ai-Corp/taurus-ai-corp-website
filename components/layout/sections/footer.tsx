@@ -16,9 +16,6 @@ export const FooterSection = () => {
               automation. Post-quantum cryptography, Hedera DLT, and autonomous AI agents —
               delivered as a service.
             </p>
-            <p className="text-muted-foreground mono-label text-xs">
-              Ontario, Canada (HQ) · Dubai, UAE · Wyoming, USA · India
-            </p>
           </div>
 
           <div className="flex flex-col gap-2">
