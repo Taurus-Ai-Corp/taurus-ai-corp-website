@@ -16,34 +16,36 @@ export const FooterSection = () => {
               automation. Post-quantum cryptography, Hedera DLT, and autonomous AI agents —
               delivered as a service.
             </p>
-            <p className="text-muted-foreground mono-label text-xs">
-              Ontario, Canada (HQ) · Dubai, UAE · Wyoming, USA · India
-            </p>
           </div>
 
           <div className="flex flex-col gap-2">
             <h3 className="mb-2 text-lg font-bold">Platforms</h3>
             <div>
-              <Link href="/#platforms" className="opacity-60 hover:opacity-100">
-                BizFlow™
+              <Link
+                href="https://q-grid.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-60 hover:opacity-100">
+                GRIDERA
               </Link>
             </div>
             <div>
               <Link
-                href="https://q-grid.net"
+                href="https://nexus.taurusai.io"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="opacity-60 hover:opacity-100">
-                Q-Grid™
+                NEXUS
+              </Link>
+            </div>
+            <div>
+              <Link href="/#platform-sentinel" className="opacity-60 hover:opacity-100">
+                SENTINEL
               </Link>
             </div>
             <div>
               <Link href="/#platforms" className="opacity-60 hover:opacity-100">
-                AssetGrid™
-              </Link>
-            </div>
-            <div>
-              <Link href="/#platforms" className="opacity-60 hover:opacity-100">
-                Neovibe™
+                All platforms
               </Link>
             </div>
           </div>

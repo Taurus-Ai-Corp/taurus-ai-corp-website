@@ -9,15 +9,15 @@ import { SponsorsSection } from "@/components/layout/sections/sponsors";
 import { TeamSection } from "@/components/layout/sections/team";
 
 export const metadata = {
-  title: "Taurus AI Corp — Orchestrated Agentic Intelligence",
+  title: "Taurus AI Corp — Three Platforms. One Intelligence Fabric.",
   description:
-    "Enterprise-grade quantum-safe infrastructure delivered as a service. Deploy AI-powered automation, blockchain integration, and post-quantum cryptography — all managed, scalable, and ready in days, not months.",
+    "GRIDERA post-quantum compliance, NEXUS marketing studio, and SENTINEL pediatric ADHD wellness — unified by PQC and Hedera audit. Live CORE: GRIDERA|Scan, Comply, Guard, Migrate.",
   openGraph: {
     type: "website",
     url: "https://taurusai.io",
-    title: "Taurus AI Corp — Orchestrated Agentic Intelligence",
+    title: "Taurus AI Corp — Three Platforms. One Intelligence Fabric.",
     description:
-      "Enterprise-grade quantum-safe infrastructure for financial services and enterprise automation. NIST PQC compliant, SWIFT 2027 ready.",
+      "Enterprise quantum-safe compliance (GRIDERA), coded marketing (NEXUS), and bio-foundry wellness (SENTINEL). NIST PQC + Hedera HCS.",
     images: [
       {
         url: "/images/taurus-ecosystem.png",
@@ -30,9 +30,9 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@TaurusAI_",
-    title: "Taurus AI Corp — Orchestrated Agentic Intelligence",
+    title: "Taurus AI Corp — Three Platforms. One Intelligence Fabric.",
     description:
-      "Enterprise-grade quantum-safe infrastructure for financial services and enterprise automation.",
+      "GRIDERA, NEXUS, and SENTINEL under one PQC + Hedera intelligence fabric.",
     images: ["/images/taurus-ecosystem.png"]
   }
 };

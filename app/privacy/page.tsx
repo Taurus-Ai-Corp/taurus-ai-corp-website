@@ -58,10 +58,8 @@ export default function PrivacyPolicyPage() {
 
           <h2>International Transfers</h2>
           <p>
-            Taurus AI Corp is headquartered in Ontario, Canada, with offices in Dubai, Wyoming
-            (USA), and India. Your information may be processed in these jurisdictions in
-            accordance with applicable data-protection law, including PIPEDA and, where
-            applicable, the GDPR.
+            Taurus AI Corp processes personal information in accordance with applicable
+            data-protection law, including PIPEDA and, where applicable, the GDPR.
           </p>
 
           <h2>Your Rights</h2>

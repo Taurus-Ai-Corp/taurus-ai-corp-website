@@ -30,11 +30,13 @@ export default function TermsOfServicePage() {
 
           <h2>Products & Services</h2>
           <p>
-            Descriptions of our platforms — including BizFlow™, Q-Grid™, AssetGrid™, and
-            Neovibe™ — are provided for general information. Access to and use of Taurus AI
-            products is governed by separate written agreements between you and Taurus AI
-            Corp. Nothing on this website constitutes an offer, commitment, or warranty of
-            specific features, performance, certification status, or availability.
+            Descriptions of our platforms — including GRIDERA, NEXUS, and SENTINEL, and
+            sub-products such as GRIDERA|Scan and GRIDERA|Comply — are provided for general
+            information. Access to and use of Taurus AI products is governed by separate
+            written agreements between you and Taurus AI Corp. Nothing on this website
+            constitutes an offer, commitment, or warranty of specific features, performance,
+            certification status, or availability. Stage labels (production, beta, lab,
+            planned) describe maturity and are not guarantees of SLA or certification.
           </p>
 
           <h2>Intellectual Property</h2>

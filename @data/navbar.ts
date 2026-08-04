@@ -1,12 +1,17 @@
+import { platformFamilies } from "./platforms";
+
 interface RouteProps {
   href: string;
   label: string;
 }
 
-interface ProductProps {
+export interface ProductProps {
   title: string;
   icon: string;
   description: string;
+  href: string;
+  external?: boolean;
+  lead?: boolean;
 }
 
 export const routeList: RouteProps[] = [
@@ -32,25 +37,12 @@ export const routeList: RouteProps[] = [
   }
 ];
 
-export const productList: ProductProps[] = [
-  {
-    title: "BizFlow™",
-    icon: "Workflow",
-    description: "AI-powered workflow automation for complex business processes."
-  },
-  {
-    title: "Q-Grid™",
-    icon: "ShieldCheck",
-    description: "Post-quantum cryptography infrastructure for enterprise."
-  },
-  {
-    title: "AssetGrid™",
-    icon: "Database",
-    description: "Hedera-powered real-world asset tokenization."
-  },
-  {
-    title: "Neovibe™",
-    icon: "Sparkles",
-    description: "Next-generation AI for creative and marketing automation."
-  }
-];
+/** Mega-menu: three families from INVENTORY-VALIDATED (no BizFlow / NeoVibe pillars) */
+export const productList: ProductProps[] = platformFamilies.map((family) => ({
+  title: family.name,
+  icon: family.icon,
+  description: family.brand,
+  href: family.href,
+  external: true,
+  lead: family.lead
+}));
