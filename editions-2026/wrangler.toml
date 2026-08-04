@@ -1,0 +1,6 @@
+name = "taurus-ai-corp-website"
+compatibility_date = "2026-08-03"
+
+# Cloudflare Pages project settings
+[pages]
+project_name = "taurus-ai-corp-website"

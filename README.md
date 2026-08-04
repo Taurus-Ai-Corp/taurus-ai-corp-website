@@ -1,5 +1,10 @@
-# Taurus AI Corp — Corporate Website
+# taurus-ai-corp-website
 
-Official website for Taurus AI Corp (taurusai.io).
+Taurus AI Corp corporate website repository.
 
-Next.js static export, deployed on Cloudflare Pages.
+## Subsites
+
+- `/editions-2026/` — TAURUS EDITIONS 2026 corporate campaign site
+  - Preview: `cd editions-2026 && python3 local_server.py`
+  - Build: `cd editions-2026 && npm run build`
+  - Deploy URL: `https://taurusai.io/editions-2026/`
