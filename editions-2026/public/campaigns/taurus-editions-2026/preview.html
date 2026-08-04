@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAURUS EDITIONS 2026 — Design System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Inter:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Void canvas */
+      --c-void: #0A0A0F;
+      --c-void-2: #0D0D14;
+      --c-paper: #F4F0E8;
+      --c-warm-gray: #9A9591;
+      --c-muted: #6B6764;
+      --c-rule: rgba(244,240,232,0.08);
+      --c-rule-strong: rgba(244,240,232,0.16);
+
+      /* Platform ink tints */
+      --c-gridera: #00F0FF;
+      --c-nexus: #FF8C42;
+      --c-biofoundry: #39FF14;
+      --c-defquan: #FF3B30;
+      --c-taurus: #FFFFFF;
+
+      /* Corporate accents */
+      --c-taurus-rule: rgba(244,240,232,0.12);
+      --c-taurus-glow: rgba(0,240,255,0.12);
+
+      /* Type */
+      --font-display: 'Oswald', 'Inter', system-ui, sans-serif;
+      --font-serif: 'Inter', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+
+      /* Layout */
+      --page-margin: clamp(24px, 6vw, 96px);
+      --measure: 640px;
+
+      /* Motion */
+      --ease-page: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-snap: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      --dur: 1.2s;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--c-void);
+      color: var(--c-paper);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ---- HEADER ---- */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px var(--page-margin);
+      background: rgba(10,10,15,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--c-rule);
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-soft);
+    }
+    .site-header.visible { transform: translateY(0); }
+    .site-header .brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--c-paper);
+    }
+    .site-header nav { display: flex; gap: 32px; }
+    .site-header nav a {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .site-header nav a:hover { color: var(--c-paper); }
+
+    /* ---- LAYOUT ---- */
+    .page, section {
+      position: relative;
+    }
+    .edition-section {
+      position: relative;
+      min-height: 100vh;
+      padding: 16vh var(--page-margin) 18vh;
+      border-bottom: 1px solid var(--c-rule);
+      overflow: hidden;
+    }
+    .edition-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(244,240,232,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(244,240,232,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .edition-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(10,10,15,0.4) 100%);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s var(--ease-page);
+    }
+    .edition-section.active-bg::after {
+      opacity: 1;
+    }
+
+    /* ---- BG IMAGE LAYER (roll + scroll motion) ---- */
+    .bg-img-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1.5s var(--ease-page);
+      will-change: transform, opacity;
+    }
+    .bg-img-layer.active { opacity: 1; }
+    .bg-img-layer {
+      perspective: 1200px;
+      perspective-origin: center center;
+    }
+    .bg-img-layer .bg-img {
+      position: absolute;
+      top: -5%; left: -5%;
+      width: 110%; height: 120%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      will-change: transform;
+      animation: roll 30s linear infinite, tilt3d 12s ease-in-out infinite alternate;
+      transform-style: preserve-3d;
+    }
+    @keyframes tilt3d {
+      0%   { transform: rotateY(-2deg) rotateX(1deg) scale(1.08); }
+      50%  { transform: rotateY(0deg) rotateX(-1deg) scale(1.1); }
+      100% { transform: rotateY(2deg) rotateX(1deg) scale(1.08); }
+    }
+    @keyframes roll {
+      0%   { transform: translateY(0) translateZ(0) scale(1.08); }
+      50%  { transform: translateY(-3%) translateZ(20px) scale(1.1); }
+      100% { transform: translateY(0) translateZ(0) scale(1.08); }
+    }
+    /* Scroll parallax handled via JS */
+    .bg-img-layer .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(10,10,15,0.85) 100%);
+      pointer-events: none;
+    }
+    .bg-img-layer .tint {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: color;
+      opacity: 0.25;
+    }
+
+    /* ---- TYPOGRAPHY ---- */
+    .display-xl {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 10vw, 150px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 0.85;
+      color: var(--c-paper);
+    }
+    .display-xl em { font-weight: 300; letter-spacing: 0.05em; text-transform: uppercase; }
+    .display-lg {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6vw, 88px);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 0.92;
+      color: var(--c-paper);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.5vw, 72px);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.0;
+      color: var(--c-paper);
+      margin-bottom: 32px;
+    }
+    .body-text {
+      font-family: var(--font-sans);
+      font-size: clamp(17px, 1.6vw, 21px);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: var(--measure);
+      color: var(--c-paper);
+    }
+    .epigraph {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-warm-gray);
+      max-width: 520px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .caption {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      line-height: 1.5;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 12vw, 190px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 0.82;
+      color: var(--c-paper);
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 .edition {
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--c-taurus);
+      text-shadow: 0 0 30px rgba(0,240,255,0.25),
+                   0 0 60px rgba(255,140,66,0.15),
+                   0 0 90px rgba(57,255,20,0.10),
+                   0 0 120px rgba(255,59,48,0.08);
+    }
+    .hero .subtitle {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.6vw, 22px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-warm-gray);
+      margin-top: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero .mark {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 2;
+      padding: 10px 16px;
+      border: 1px solid var(--c-rule);
+      background: rgba(10,10,15,0.4);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+    }
+
+    /* ---- FOLIO ---- */
+    .folio {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 48px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--c-rule);
+      display: inline-block;
+      min-width: 160px;
+    }
+
+    /* ---- PLATFORM BAR ---- */
+    .platform-bar {
+      width: 96px;
+      height: 5px;
+      background: var(--platform);
+      margin-bottom: 32px;
+      box-shadow: 0 0 24px var(--platform), 0 0 48px var(--platform), 0 0 80px var(--platform);
+      position: relative;
+    }
+    .platform-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--platform);
+      filter: blur(6px);
+      opacity: 0.6;
+    }
+
+    /* ---- CHAPTER ---- */
+    .chapter-number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 16px;
+    }
+
+    /* ---- CONTENTS ---- */
+    .contents-list { list-style: none; }
+    .contents-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: baseline;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--c-rule);
+      gap: 24px;
+    }
+    .contents-row .num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-muted);
+      letter-spacing: 0.2em;
+    }
+    .contents-row .title {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.4vw, 36px);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--c-paper);
+    }
+    .contents-row .domain {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      color: var(--c-muted);
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .contents-row .page-no {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ---- COMPARISON ---- */
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table th, .compare-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--c-rule);
+      vertical-align: top;
+    }
+    .compare-table th {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+    .compare-table td {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-paper);
+    }
+    .compare-table .old { color: var(--c-muted); text-decoration: line-through; }
+    .compare-table .new { color: var(--c-paper); }
+
+    /* ---- TYPE SPECIMEN ---- */
+    .type-table { width: 100%; }
+    .type-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--c-rule);
+      align-items: baseline;
+    }
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+    .type-meta .spec { display: block; margin-top: 4px; color: var(--c-muted); opacity: 0.6; }
+
+    /* ---- COMPONENTS ---- */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .component-card {
+      padding: 32px;
+      border: 1px solid var(--c-rule);
+      background: rgba(244,240,232,0.02);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .component-card:hover {
+      border-color: var(--c-rule-strong);
+      box-shadow: 0 0 24px rgba(244,240,232,0.05);
+    }
+    .component-card h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+    .component-card p {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-warm-gray);
+      line-height: 1.6;
+    }
+
+    /* ---- COLOR RAMP ---- */
+    .color-ramp { display: flex; height: 64px; }
+    .color-swatch {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 8px 12px;
+    }
+    .color-swatch span {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.6);
+    }
+
+    /* ---- MOTION SECTION ---- */
+    .motion-table { width: 100%; border-collapse: collapse; }
+    .motion-table th, .motion-table td {
+      text-align: left;
+      padding: 16px;
+      border-bottom: 1px solid var(--c-rule);
+    }
+    .motion-table th {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+    .motion-table td {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    /* ---- WORKFLOW ---- */
+    .workflow-diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 32px 0;
+    }
+    .workflow-step {
+      padding: 24px;
+      border-left: 3px solid var(--c-rule);
+      transition: border-color 0.3s;
+    }
+    .workflow-step:hover { border-left-color: var(--c-rule-strong); }
+    .workflow-step .step-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--c-muted);
+      margin-bottom: 8px;
+    }
+    .workflow-step .step-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .workflow-step .step-desc {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--c-warm-gray);
+    }
+
+    /* ---- CMS ---- */
+    .cms-block {
+      background: rgba(244,240,232,0.02);
+      border: 1px solid var(--c-rule);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .cms-block h5 {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .cms-block pre {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-warm-gray);
+      line-height: 1.5;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    /* ---- BOOK INTEGRATION ---- */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .book-card {
+      padding: 32px;
+      border: 1px solid var(--c-rule);
+      background: rgba(244,240,232,0.02);
+      transition: transform 0.4s var(--ease-soft), box-shadow 0.4s;
+    }
+    .book-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .book-card .book-type {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 16px;
+    }
+    .book-card h4 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 16px;
+    }
+    .book-card p {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-warm-gray);
+      line-height: 1.6;
+    }
+    .book-card .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border: 1px solid var(--c-rule);
+      margin-top: 16px;
+      margin-right: 8px;
+      color: var(--c-muted);
+    }
+
+    /* ---- CAMPAIGN GRID ---- */
+    .campaign-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .campaign-card {
+      padding: 28px;
+      border: 1px solid var(--c-rule);
+      background: rgba(244,240,232,0.02);
+      position: relative;
+      overflow: hidden;
+    }
+    .campaign-card .platform-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      padding: 4px 10px;
+      display: inline-block;
+    }
+    .campaign-card h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 12px;
+    }
+    .campaign-card p {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--c-warm-gray);
+      line-height: 1.6;
+    }
+
+    /* ---- HINT UTILITIES ---- */
+    .hint-gridera { color: var(--c-gridera) !important; }
+    .hint-nexus { color: var(--c-nexus) !important; }
+    .hint-biofoundry { color: var(--c-biofoundry) !important; }
+    .hint-defquan { color: var(--c-defquan) !important; }
+    .platform-glow {
+      text-shadow: 0 0 20px rgba(0,240,255,0.25),
+                   0 0 40px rgba(255,140,66,0.15),
+                   0 0 60px rgba(57,255,20,0.10),
+                   0 0 80px rgba(255,59,48,0.08);
+    }
+    .taurus-accent-bar {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--c-gridera), var(--c-nexus), var(--c-biofoundry), var(--c-defquan));
+      opacity: 0.35;
+      margin: 32px 0;
+    }
+
+    /* ---- PAGE BREAK ---- */
+    .page-break {
+      width: 100%;
+      height: 1px;
+      background: var(--c-rule);
+      margin: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.5s var(--ease-page);
+    }
+    .page-break.visible { transform: scaleX(1); }
+
+    /* ---- REVEAL ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s var(--ease-page), transform 1s var(--ease-page);
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- FOOTER ---- */
+    .site-footer {
+      padding: 64px var(--page-margin);
+      border-top: 1px solid var(--c-rule);
+      background: var(--c-void-2);
+    }
+    .site-footer .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .site-footer .footer-col h6 {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 12px;
+    }
+    .site-footer .footer-col p, .site-footer .footer-col a {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--c-warm-gray);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .site-footer .footer-bottom {
+      padding-top: 32px;
+      border-top: 1px solid var(--c-rule);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--c-muted);
+    }
+
+    @media (max-width: 768px) {
+      .contents-row { grid-template-columns: 40px 1fr; }
+      .contents-row .page-no { display: none; }
+      .workflow-diagram { grid-template-columns: 1fr; }
+      .type-row { grid-template-columns: 120px 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg-img-layer { opacity: 1 !important; }
+      .bg-img-layer .bg-img { animation: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="header">
+    <div class="brand">TAURUS AI CORP</div>
+    <nav>
+      <a href="#hero">Cover</a>
+      <a href="#editions">Editions</a>
+      <a href="#gridera">GRIDERA</a>
+      <a href="#nexus">NEXUS</a>
+      <a href="#biofoundry">BIO-FOUNDRY</a>
+      <a href="#defquan">DEFQUAN</a>
+      <a href="#book">Book</a>
+      <a href="#campaigns">Campaigns</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="edition-section hero" id="hero" style="--platform: var(--c-taurus);">
+    <div class="bg-img-layer active" data-bg="hero">
+      <div class="bg-img" style="background-image: url('assets/hero/animated-hero.png');"></div>
+      <div class="tint" style="background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(255,140,66,0.15), rgba(57,255,20,0.1), rgba(255,59,48,0.08)); mix-blend-mode: screen;"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="mark reveal">TAURUS AI Corp · <span class="hint-gridera">GRIDERA</span> · <span class="hint-nexus">NEXUS</span> · <span class="hint-biofoundry">BIO-FOUNDRY</span> · <span class="hint-defquan">DEFQUAN&#8482;</span></div>
+      <h1 class="reveal">TAURUS<br><span class="edition">EDITIONS</span></h1>
+      <p class="subtitle reveal">A book system for publishing platforms</p>
+      <p class="caption reveal" style="margin-top: 64px; max-width: 520px; line-height: 1.8;">
+        First impression &middot; 2026 &middot; The corporate canvas is white on black, with <span class="hint-gridera">neon teal</span>, <span class="hint-nexus">orange</span>, <span class="hint-biofoundry">neon green</span>, and <span class="hint-defquan">red</span> hints reserved for the four product volumes. Background images animate with roll and scroll motion.
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- TITLE PAGE -->
+  <section class="edition-section" id="editions">
+    <div class="bg-img-layer" data-bg="editions">
+      <div class="bg-img" style="background-image: url('assets/hero/gallery-01.png');"></div>
+      <div class="tint" style="background: linear-gradient(180deg, rgba(10,10,15,0.6), rgba(10,10,15,0.8));"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="folio reveal">FOLIO 001 &middot; EDITIONS 2026</div>
+      <div class="taurus-accent-bar reveal"></div>
+      <h2 class="display-xl reveal">EDITIONS<br><em>2026</em></h2>
+      <p class="body-text reveal" style="margin-top: 48px;">
+        TAURUS AI Corp publishes four platform volumes from a single editorial engine. The binding is shared; the voice belongs to each volume. Every platform is a book in the Taurus catalog.
+      </p>
+      <p class="epigraph reveal" style="margin-top: 32px;">
+        GRIDERA &middot; NEXUS &middot; BIO-FOUNDRY &middot; DEFQUAN&#8482;<br>
+        Four volumes &middot; one imprint &middot; one operating company
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- CONTENTS -->
+  <section class="edition-section" id="contents">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">CONTENTS</div>
+      <h2 class="section-title reveal">TABLE OF CONTENTS</h2>
+      <ul class="contents-list">
+        <li class="contents-row reveal">
+          <div class="num">CH 01</div>
+          <div>
+            <div class="title">GRIDERA</div>
+            <div class="domain">Post-Quantum Compliance &middot; q-grid.net &middot; <span class="hint-gridera">neon teal grid + key motifs</span></div>
+          </div>
+          <div class="page-no">P 014</div>
+        </li>
+        <li class="contents-row reveal">
+          <div class="num">CH 02</div>
+          <div>
+            <div class="title">NEXUS</div>
+            <div class="domain">Agentic Creative Studio &middot; nexus.taurusai.io &middot; <span class="hint-nexus">orange orbital spheres</span></div>
+          </div>
+          <div class="page-no">P 028</div>
+        </li>
+        <li class="contents-row reveal">
+          <div class="num">CH 03</div>
+          <div>
+            <div class="title">BIO-FOUNDRY</div>
+            <div class="domain">Quantum Biology &middot; bio-foundry.taurusai.io &middot; <span class="hint-biofoundry">neon green hex mesh</span></div>
+          </div>
+          <div class="page-no">P 042</div>
+        </li>
+        <li class="contents-row reveal">
+          <div class="num">CH 04</div>
+          <div>
+            <div class="title">DEFQUAN&#8482;</div>
+            <div class="domain">Dual-Use Defence Mesh &middot; Entity TBD &middot; <span class="hint-defquan">red diamond network</span></div>
+          </div>
+          <div class="page-no">P 056</div>
+        </li>
+        <li class="contents-row reveal">
+          <div class="num">CH 05</div>
+          <div>
+            <div class="title">BOOK INTEGRATION</div>
+            <div class="domain">Real-book concept &middot; multi-platform publishing &middot; campaigns &middot; ads &middot; newsletters</div>
+          </div>
+          <div class="page-no">P 070</div>
+        </li>
+        <li class="contents-row reveal">
+          <div class="num">CH 06</div>
+          <div>
+            <div class="title">DESIGN TOKENS</div>
+            <div class="domain">DTCG 2025.10 &middot; color &middot; type &middot; spacing &middot; motion</div>
+          </div>
+          <div class="page-no">P 084</div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- COMPARISON: OLD vs NEW -->
+  <section class="edition-section" id="comparison">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">COMPARISON</div>
+      <h2 class="section-title reveal">OLD vs NEW</h2>
+      <table class="compare-table reveal">
+        <thead>
+          <tr><th>Property</th><th>Old (Rejected)</th><th>New (Taurus Editions)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Typography</td><td class="old">Fraunces &mdash; editorial serif with italic emphasis</td><td class="new">Oswald &mdash; industrial condensed sans &middot; uppercase</td></tr>
+          <tr><td>Body Font</td><td class="old">Newsreader &mdash; warm serif</td><td class="new">Inter &mdash; clean enterprise sans</td></tr>
+          <tr><td>Mono Font</td><td class="old">Source Code Pro</td><td class="new">Space Mono</td></tr>
+          <tr><td>GRIDERA Color</td><td class="old">#58E5C3 (teal)</td><td class="new">#00F0FF (neon teal)</td></tr>
+          <tr><td>NEXUS Color</td><td class="old">#8FADFF (blue)</td><td class="new">#FF8C42 (orange)</td></tr>
+          <tr><td>BIO-FOUNDRY Color</td><td class="old">#9BF7C2 (light green)</td><td class="new">#39FF14 (neon green)</td></tr>
+          <tr><td>DEFQUAN Color</td><td class="old">#FF8C85 (coral)</td><td class="new">#FF3B30 (red)</td></tr>
+          <tr><td>Layout</td><td class="old">SaaS dashboard &middot; glass blocks</td><td class="new">Editorial book &middot; industrial grid</td></tr>
+          <tr><td>Backgrounds</td><td class="old">Canvas-only (no images)</td><td class="new">CSS background-image layers with roll + scroll motion</td></tr>
+          <tr><td>Motion</td><td class="old">Pulsing dots &middot; steppers</td><td class="new">Page fades &middot; rule drawing &middot; roll/scroll parallax</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- COLOR SYSTEM -->
+  <section class="edition-section" id="color">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">COLOR SYSTEM</div>
+      <h2 class="section-title reveal">PLATFORM INK TINTS</h2>
+      <p class="body-text reveal" style="margin-bottom: 48px;">
+        The corporate canvas is white on black. Each platform volume carries one neon ink tint, reserved for marginalia, chapter bars, and accent hints.
+      </p>
+      <div class="color-ramp reveal">
+        <div class="color-swatch" style="background: #0A0A0F;"><span style="color: #F4F0E8;">VOID #0A0A0F</span></div>
+        <div class="color-swatch" style="background: #00F0FF;"><span>GRIDERA #00F0FF</span></div>
+        <div class="color-swatch" style="background: #FF8C42;"><span>NEXUS #FF8C42</span></div>
+        <div class="color-swatch" style="background: #39FF14;"><span>BIO #39FF14</span></div>
+        <div class="color-swatch" style="background: #FF3B30; color: white;"><span style="color: white;">DEFQUAN #FF3B30</span></div>
+        <div class="color-swatch" style="background: #F4F0E8;"><span>PAPER #F4F0E8</span></div>
+      </div>
+      <p class="caption reveal" style="margin-top: 24px;">
+        GRIDERA = neon teal &middot; NEXUS = orange &middot; BIO-FOUNDRY = neon green &middot; DEFQUAN = red &middot; TAURUS = white-on-black with 4-color hints
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- TYPE SPECIMEN -->
+  <section class="edition-section" id="type">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">TYPE SPECIMEN</div>
+      <h2 class="section-title reveal">TYPOGRAPHY</h2>
+      <p class="body-text reveal" style="margin-bottom: 32px;">
+        Oswald carries display and chapter titles in uppercase. Inter handles body copy and UI. Space Mono is the only voice for metadata, page numbers, and code.
+      </p>
+      <div class="type-table reveal">
+        <div class="type-row">
+          <div class="type-meta">Display XL<span class="spec">Oswald &middot; 120/0.82 &middot; 700 &middot; +.04em &middot; UC</span></div>
+          <div style="font-family:var(--font-display);font-size:72px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;line-height:0.82;">TAURUS EDITIONS</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Display Lg<span class="spec">Oswald &middot; 64/0.92 &middot; 500 &middot; +.02em &middot; UC</span></div>
+          <div style="font-family:var(--font-display);font-size:48px;font-weight:500;letter-spacing:0.02em;text-transform:uppercase;line-height:0.92;">A book system for publishing platforms.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Chapter Title<span class="spec">Oswald &middot; 40/1.0 &middot; 500 &middot; +.04em &middot; UC</span></div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;line-height:1.0;">GRIDERA: Post-Quantum Compliance</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Body<span class="spec">Inter &middot; 21/1.7 &middot; 300 &middot; 0</span></div>
+          <div style="font-family:var(--font-sans);font-size:21px;font-weight:300;line-height:1.7;">Every platform is published from the same editorial engine. The binding is shared; the voice belongs to the volume.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">UI Sans<span class="spec">Inter &middot; 17/1.55 &middot; 400 &middot; 0</span></div>
+          <div style="font-family:var(--font-sans);font-size:17px;line-height:1.55;">Components are pages, not widgets. A button is a page reference. A table is an index.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Mono Data<span class="spec">Space Mono &middot; 13/1.5 &middot; 400 &middot; tabular</span></div>
+          <div style="font-family:var(--font-mono);font-size:13px;line-height:1.5;">CBOM-7f3a9b2e &middot; ML-DSA-65 &middot; HCS-0.0.4472891 &middot; 2026-08-02T04:11:09Z</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Mono Label<span class="spec">Space Mono &middot; 9.5/1 &middot; 400 &middot; +.22em &middot; UC</span></div>
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;">FOLIO &middot; COLOPHON &middot; MARGINALIA &middot; INDEX</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- GRIDERA CHAPTER -->
+  <section class="edition-section" id="gridera" style="--platform: var(--c-gridera);">
+    <div class="bg-img-layer" data-bg="gridera">
+      <div class="bg-img" style="background-image: url('assets/platforms/gridera-grid-floor.png');"></div>
+      <div class="tint" style="background: linear-gradient(135deg, rgba(0,240,255,0.35), rgba(0,240,255,0.1)); mix-blend-mode: screen;"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="folio reveal">CHAPTER 01 &middot; GRIDERA &middot; P 014</div>
+      <div class="platform-bar reveal"></div>
+      <div class="chapter-number reveal">VOLUME 01</div>
+      <h2 class="display-lg reveal">GRIDERA</h2>
+      <p class="epigraph reveal" style="color: var(--c-gridera);">POST-QUANTUM COMPLIANCE</p>
+      <p class="body-text reveal" style="margin-top: 32px;">
+        GRIDERA is the compliance volume. Post-quantum cryptography assessments, CBOM generation, EU AI Act wizard, ML-DSA-65 signing on Hedera HCS. Sovereign jurisdiction cells: NA, EU, IN, AE, CA. The neon teal ink marks every margin, every audit trail, every cryptographic proof.
+      </p>
+      <p class="caption reveal" style="margin-top: 32px;">
+        ENTITY: ARQ QUANTUM LLC (Wyoming) &middot; DOMAIN: q-grid.net &middot; STATUS: SHIPPING<br>
+        SUB-PRODUCTS: Comply, Scan, Guard, Migrate, Pay &middot; ROADMAP: Certify, Lend, Shield
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- NEXUS CHAPTER -->
+  <section class="edition-section" id="nexus" style="--platform: var(--c-nexus);">
+    <div class="bg-img-layer" data-bg="nexus">
+      <div class="bg-img" style="background-image: url('assets/platforms/nexus-orbital.png');"></div>
+      <div class="tint" style="background: linear-gradient(135deg, rgba(255,140,66,0.35), rgba(255,140,66,0.1)); mix-blend-mode: screen;"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="folio reveal">CHAPTER 02 &middot; NEXUS &middot; P 028</div>
+      <div class="platform-bar reveal"></div>
+      <div class="chapter-number reveal">VOLUME 02</div>
+      <h2 class="display-lg reveal">NEXUS</h2>
+      <p class="epigraph reveal" style="color: var(--c-nexus);">AGENTIC CREATIVE STUDIO</p>
+      <p class="body-text reveal" style="margin-top: 32px;">
+        NEXUS is the creative volume. AI social media management, campaign studio, business intelligence hub. The orange ink marks every campaign brief, every creative output, every agent workflow. Formerly NeoVibe and ORCA, now unified under one imprint.
+      </p>
+      <p class="caption reveal" style="margin-top: 32px;">
+        ENTITY: TAURUS AI CORP - FZCO (UAE, IFZA Dubai, License #68122) &middot; DOMAIN: nexus.taurusai.io &middot; STATUS: SHIPPING<br>
+        SUB-PRODUCTS: Nexus Social, Nexus Creative, Nexus Intel, Nexus Freelance, Nexus Flow
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- BIO-FOUNDRY CHAPTER -->
+  <section class="edition-section" id="biofoundry" style="--platform: var(--c-biofoundry);">
+    <div class="bg-img-layer" data-bg="biofoundry">
+      <div class="bg-img" style="background-image: url('assets/platforms/biofoundry-hex-mesh.png');"></div>
+      <div class="tint" style="background: linear-gradient(135deg, rgba(57,255,20,0.3), rgba(57,255,20,0.08)); mix-blend-mode: screen;"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="folio reveal">CHAPTER 03 &middot; BIO-FOUNDRY &middot; P 042</div>
+      <div class="platform-bar reveal"></div>
+      <div class="chapter-number reveal">VOLUME 03</div>
+      <h2 class="display-lg reveal">BIO-FOUNDRY</h2>
+      <p class="epigraph reveal" style="color: var(--c-biofoundry);">QUANTUM BIOLOGY &middot; SENTINEL</p>
+      <p class="body-text reveal" style="margin-top: 32px;">
+        BIO-FOUNDRY is the science volume. SENTINEL by Taurus AI: wellness biofeedback wearable with 8-channel EEG + HRV, pediatric ADHD prodrome detection. The neon green ink marks every coherence metric, every acoustic restoration, every quantum stabilization signal.
+      </p>
+      <p class="caption reveal" style="margin-top: 32px;">
+        ENTITY: TAURUS AI Corp. (Canada, CBCA 1702855-5) &middot; DOMAIN: bio-foundry.taurusai.io &middot; STATUS: RESEARCH-STAGE<br>
+        PATENT PILLARS: NACRS, AKQS, HQGP &middot; SHIPPING: taurus-gcfd-tracker (Apache-2.0, GitHub + HuggingFace)
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- DEFQUAN CHAPTER -->
+  <section class="edition-section" id="defquan" style="--platform: var(--c-defquan);">
+    <div class="bg-img-layer" data-bg="defquan">
+      <div class="bg-img" style="background-image: url('assets/platforms/defquan-diamond.png');"></div>
+      <div class="tint" style="background: linear-gradient(135deg, rgba(255,59,48,0.3), rgba(255,59,48,0.08)); mix-blend-mode: screen;"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="folio reveal">CHAPTER 04 &middot; DEFQUAN&#8482; &middot; P 056</div>
+      <div class="platform-bar reveal"></div>
+      <div class="chapter-number reveal">VOLUME 04</div>
+      <h2 class="display-lg reveal">DEFQUAN&#8482;</h2>
+      <p class="epigraph reveal" style="color: var(--c-defquan);">DUAL-USE DEFENCE MESH</p>
+      <p class="body-text reveal" style="margin-top: 32px;">
+        DEFQUAN is the defence volume. Post-quantum tactical C4ISR telemetry signing, offline mesh comms, hardware root-of-trust. Arctic-grade, air-gapped, ML-DSA-65 on Hiero aBFT. The red ink marks every tactical signature, every mesh node, every hardware-isolated key.
+      </p>
+      <p class="caption reveal" style="margin-top: 32px;">
+        ENTITY: UNASSIGNED (decision required) &middot; STATUS: ARCHITECTURE PHASE (TRL 2-3) &middot; ZERO CODE<br>
+        COMPONENTS: TRESOR (hardware root-of-trust), Offline mesh, Arctic C4ISR, Edge AI (Orin NX)
+      </p>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- COMPONENTS -->
+  <section class="edition-section" id="components">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">COMPONENTS</div>
+      <h2 class="section-title reveal">EDITORIAL PRIMITIVES</h2>
+      <p class="body-text reveal" style="margin-bottom: 48px;">
+        Components are pages, not widgets. A button is a page reference. A table is an index. A dialog is a footnote. Every primitive inherits the industrial grid and neon platform ink.
+      </p>
+      <div class="component-grid">
+        <div class="component-card reveal">
+          <h4>Running Head</h4>
+          <p>Fixed top bar with section name and folio number. Fades in on scroll, stamps the page identity.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Folio</h4>
+          <p>Page number block with bottom rule. Industrial mono, stamped uppercase, 160px min-width.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Platform Bar</h4>
+          <p>Neon accent bar (96x5px) with triple-layer glow. Color matches the active volume's ink tint.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Chapter Opener</h4>
+          <p>Full-bleed section with background image, platform tint, folio, and chapter number. Roll motion animates the background.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Marginalia</h4>
+          <p>Side notes in mono, tinted with platform ink. Appears as a footnote on wide screens, inline on mobile.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Index Table</h4>
+          <p>Sortable table with mono headers, hairline rules. Cell backgrounds glow on hover with the platform tint.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Line Rule</h4>
+          <p>Horizontal divider that draws from left to right on scroll. 1px hairline with optional platform-color glow.</p>
+        </div>
+        <div class="component-card reveal">
+          <h4>Page Break</h4>
+          <p>Full-width rule between sections. Animates from scaleX(0) to scaleX(1) with page-turn easing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- MOTION -->
+  <section class="edition-section" id="motion">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">MOTION</div>
+      <h2 class="section-title reveal">SCROLL MOTION + ROLL ANIMATION</h2>
+      <p class="body-text reveal" style="margin-bottom: 32px;">
+        The corporate website uses two motion systems: <strong>roll</strong> (continuous background drift) and <strong>scrollmotion</strong> (parallax tied to scroll position). Together they create the feeling of turning pages in a book.
+      </p>
+      <table class="motion-table reveal">
+        <thead>
+          <tr><th>Name</th><th>Trigger</th><th>Easing</th><th>Duration</th><th>Effect</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Roll</td><td>Continuous</td><td>linear</td><td>30s loop</td><td>Background image drifts vertically with subtle scale</td></tr>
+          <tr><td>Scroll Parallax</td><td>Scroll Y</td><td>linear</td><td>Frame-sync</td><td>Background translateY proportional to section position</td></tr>
+          <tr><td>Reveal Fade</td><td>IntersectionObserver</td><td>page</td><td>1s</td><td>Content fades in + translateY(40px) to 0</td></tr>
+          <tr><td>Page Break</td><td>IntersectionObserver</td><td>page</td><td>1.5s</td><td>Rule draws from left: scaleX(0) to scaleX(1)</td></tr>
+          <tr><td>Header Reveal</td><td>Scroll Y > 100px</td><td>soft</td><td>0.5s</td><td>Header slides down from translateY(-100%)</td></tr>
+          <tr><td>Platform Bar Glow</td><td>Hover / visible</td><td>soft</td><td>0.3s</td><td>Box-shadow intensifies with platform color</td></tr>
+          <tr><td>Background Fade</td><td>IntersectionObserver</td><td>page</td><td>1.5s</td><td>Background image opacity 0 to 1 when section enters</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- WORKFLOW -->
+  <section class="edition-section" id="workflow">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">WORKFLOW</div>
+      <h2 class="section-title reveal">DESIGN-TO-CMS PIPELINE</h2>
+      <p class="body-text reveal" style="margin-bottom: 32px;">
+        From token spec to deployed page. Each step is a gate with a pass/fail test.
+      </p>
+      <div class="workflow-diagram">
+        <div class="workflow-step reveal">
+          <div class="step-num">STEP 01</div>
+          <div class="step-title">TOKENS</div>
+          <div class="step-desc">tokens.json (DTCG 2025.10) defines color, type, spacing, motion, and platform ink tints. Source of truth for all platforms.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="step-num">STEP 02</div>
+          <div class="step-title">SCSS</div>
+          <div class="step-desc">Platform SCSS files import _tokens.scss and emit per-volume CSS custom properties. Each platform overrides only its ink tint.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="step-num">STEP 03</div>
+          <div class="step-title">COMPONENTS</div>
+          <div class="step-desc">React/Vue components consume CSS custom properties. No hardcoded colors. Every component reads --platform from its section.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="step-num">STEP 04</div>
+          <div class="step-title">CMS SCHEMA</div>
+          <div class="step-desc">Volume, Chapter, Section, and Content types. Each content entry carries a platform reference that sets the ink tint.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="step-num">STEP 05</div>
+          <div class="step-title">ASSETS</div>
+          <div class="step-desc">Background images stored per platform. CSS background-image layers with roll + scrollmotion animation. No img tags in the HTML body.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="step-num">STEP 06</div>
+          <div class="step-title">DEPLOY</div>
+          <div class="step-desc">Static export to Vercel/Cloudflare. Preview gate: preview.html must pass structural verification before production deploy.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- CMS SCHEMA -->
+  <section class="edition-section" id="cms">
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">CMS</div>
+      <h2 class="section-title reveal">CONTENT SCHEMA</h2>
+      <p class="body-text reveal" style="margin-bottom: 32px;">
+        Headless CMS schema for managing volumes, chapters, and multi-platform content.
+      </p>
+      <div class="cms-block reveal">
+        <h5>Volume Schema</h5>
+        <pre>{
+  "type": "object",
+  "properties": {
+    "id":          { "type": "string" },
+    "title":       { "type": "string" },
+    "platform":    { "enum": ["gridera", "nexus", "biofoundry", "defquan", "taurus"] },
+    "entity":      { "type": "string" },
+    "domain":      { "type": "string" },
+    "inkTint":     { "type": "string" },
+    "background":  { "type": "string" },
+    "chapters":    { "type": "array", "items": { "$ref": "schemas/chapter.json" } }
+  }
+}</pre>
+      </div>
+      <div class="cms-block reveal">
+        <h5>Content Types</h5>
+        <pre>{
+  "campaign":   { "platform": "string", "title": "string", "body": "markdown", "media": "array", "tags": "array" },
+  "ad":         { "platform": "string", "format": "enum[display, social, print]", "copy": "string", "cta": "string" },
+  "blog":       { "platform": "string", "title": "string", "body": "markdown", "author": "string", "date": "datetime" },
+  "newsletter": { "platform": "string", "subject": "string", "body": "markdown", "recipients": "array" },
+  "webinar":    { "platform": "string", "title": "string", "date": "datetime", "url": "string", "description": "string" },
+  "publishing": { "platform": "string", "type": "enum[whitepaper, report, brief, dossier]", "title": "string", "file": "string" }
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- BOOK INTEGRATION -->
+  <section class="edition-section" id="book">
+    <div class="bg-img-layer" data-bg="book">
+      <div class="bg-img" style="background-image: url('assets/hero/gallery-10.png');"></div>
+      <div class="tint" style="background: linear-gradient(180deg, rgba(10,10,15,0.7), rgba(10,10,15,0.85));"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">CHAPTER 05</div>
+      <h2 class="section-title reveal">REAL BOOK INTEGRATION</h2>
+      <p class="body-text reveal" style="margin-bottom: 32px;">
+        The corporate website is a book. Each platform is a volume. Every product launch is a chapter. Every campaign is a folio. The reader scrolls through pages, not screens. Backgrounds roll and shift with scroll motion, creating the physical feeling of turning pages.
+      </p>
+      <p class="epigraph reveal">
+        The book is not a metaphor. It is the architecture.<br>
+        Pages are sections. Chapters are products. The spine is the brand.
+      </p>
+      <div class="book-grid">
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 01</div>
+          <h4>WHITE PAPER</h4>
+          <p>Each platform publishes technical white papers as book chapters. Readers scroll through multi-page documents with running heads, footnotes, and marginalia. Background images shift per section.</p>
+          <span class="tag">GRIDERA</span>
+          <span class="tag">DEFQUAN</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 02</div>
+          <h4>INTERACTIVE REPORT</h4>
+          <p>Compliance reports and CBOM audits render as book pages with live data. Page breaks animate on scroll. Tables are indexes. Charts are plates.</p>
+          <span class="tag">GRIDERA</span>
+          <span class="tag">BIO-FOUNDRY</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 03</div>
+          <h4>CAMPAIGN BRIEF</h4>
+          <p>Creative campaigns are published as book inserts. Each campaign is a two-page spread with platform ink tint, background imagery, and roll motion. The brief is the page; the assets are the plates.</p>
+          <span class="tag">NEXUS</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 04</div>
+          <h4>NEWSLETTER</h4>
+          <p>Email newsletters are book excerpts. Each issue is a folio with a running head, chapter reference, and marginalia. Subscribers receive pages, not emails.</p>
+          <span class="tag">TAURUS</span>
+          <span class="tag">NEXUS</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 05</div>
+          <h4>WEBINAR</h4>
+          <p>Webinars are book launches. The registration page is a title page. The recording is a chapter. The Q&amp;A is marginalia. The slides are plates.</p>
+          <span class="tag">ALL PLATFORMS</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 06</div>
+          <h4>AD CREATIVES</h4>
+          <p>Display and social ads are book covers. Each ad is a single-page spread with platform ink, background image, and a single headline. The CTA is a page reference.</p>
+          <span class="tag">NEXUS</span>
+          <span class="tag">GRIDERA</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 07</div>
+          <h4>BLOG</h4>
+          <p>Blog posts are book essays. Long-form, scroll-driven, with running heads and footnote marginalia. Each post belongs to a platform volume.</p>
+          <span class="tag">ALL PLATFORMS</span>
+        </div>
+        <div class="book-card reveal">
+          <div class="book-type">FORMAT 08</div>
+          <h4>PUBLISHING</h4>
+          <p>Formal publications (dossiers, briefs, reports) are hardcover volumes. Print-ready PDF exports with colophon, ISBN-style identifiers, and platform ink on the spine.</p>
+          <span class="tag">GRIDERA</span>
+          <span class="tag">DEFQUAN</span>
+          <span class="tag">BIO-FOUNDRY</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- MULTI-PLATFORM CAMPAIGNS -->
+  <section class="edition-section" id="campaigns">
+    <div class="bg-img-layer" data-bg="campaigns">
+      <div class="bg-img" style="background-image: url('assets/hero/gallery-12.png');"></div>
+      <div class="tint" style="background: linear-gradient(135deg, rgba(0,240,255,0.06), rgba(255,140,66,0.04), rgba(57,255,20,0.03), rgba(255,59,48,0.02));"></div>
+      <div class="vignette"></div>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <div class="chapter-number reveal">CHAPTER 06</div>
+      <h2 class="section-title reveal">MULTI-PLATFORM CAMPAIGNS</h2>
+      <p class="body-text reveal" style="margin-bottom: 32px;">
+        Every campaign is a multi-volume publication. A single creative concept spawns across all four platforms, each tinted with its own ink, each distributed through its own channel. The book system ensures brand coherence without sameness.
+      </p>
+      <div class="campaign-grid">
+        <div class="campaign-card reveal" style="border-left: 3px solid var(--c-gridera);">
+          <div class="platform-tag" style="background: rgba(0,240,255,0.1); color: var(--c-gridera);">GRIDERA</div>
+          <h4>QUANTUM COMPLIANCE QUARTERLY</h4>
+          <p>A quarterly publication series covering PQC migration, EU AI Act deadlines, and CBOM best practices. Each issue is a book chapter with live compliance matrices, downloadable dossiers, and webinar registrations.</p>
+          <p class="caption" style="margin-top: 16px;">CHANNELS: LinkedIn, X, Email, Webinar</p>
+        </div>
+        <div class="campaign-card reveal" style="border-left: 3px solid var(--c-nexus);">
+          <div class="platform-tag" style="background: rgba(255,140,66,0.1); color: var(--c-nexus);">NEXUS</div>
+          <h4>AGENTIC CREATIVE STUDIO</h4>
+          <p>Campaign-in-a-book. AI-generated creative assets, social posts, and ad variants published as a single book spread. Brands subscribe to volumes, not dashboards. Each campaign is a folio.</p>
+          <p class="caption" style="margin-top: 16px;">CHANNELS: Meta, Instagram, TikTok, YouTube, LinkedIn</p>
+        </div>
+        <div class="campaign-card reveal" style="border-left: 3px solid var(--c-biofoundry);">
+          <div class="platform-tag" style="background: rgba(57,255,20,0.1); color: var(--c-biofoundry);">BIO-FOUNDRY</div>
+          <h4>COHERENCE JOURNAL</h4>
+          <p>A monthly research journal publishing EEG/HRV coherence findings, NACRS protocol updates, and SENTINEL wearable data. Peer-reviewed book chapters with open data plates.</p>
+          <p class="caption" style="margin-top: 16px;">CHANNELS: Research forums, GitHub, HuggingFace, Newsletter</p>
+        </div>
+        <div class="campaign-card reveal" style="border-left: 3px solid var(--c-defquan);">
+          <div class="platform-tag" style="background: rgba(255,59,48,0.1); color: var(--c-defquan);">DEFQUAN&#8482;</div>
+          <h4>ARCTIC SIGNAL BRIEF</h4>
+          <p>Defence-sector briefing series for DND, NRC IRAP, and Vimy Forge. Each brief is a classified-format book chapter with architecture diagrams, TRL assessments, and hardware root-of-trust specs.</p>
+          <p class="caption" style="margin-top: 16px;">CHANNELS: Defence portals, Grant submissions, NRC IRAP</p>
+        </div>
+        <div class="campaign-card reveal" style="border-left: 3px solid var(--c-taurus);">
+          <div class="platform-tag" style="background: rgba(244,240,232,0.06); color: var(--c-paper);">TAURUS CORPORATE</div>
+          <h4>EDITIONS CATALOG</h4>
+          <p>The corporate annual report is a book. Taurus Editions 2026 catalog with all four volumes, financial summaries, entity mapping, and forward roadmap. Print-ready, web-readable, email-deliverable.</p>
+          <p class="caption" style="margin-top: 16px;">CHANNELS: taurusai.io, Email, Investor relations, Print</p>
+        </div>
+        <div class="campaign-card reveal" style="border-left: 3px solid var(--c-gridera);">
+          <div class="platform-tag" style="background: rgba(0,240,255,0.1); color: var(--c-gridera);">GRIDERA + NEXUS</div>
+          <h4>CROSS-VOLUME ADS</h4>
+          <p>Display and social ad creatives that cross platforms: GRIDERA compliance content distributed through NEXUS creative channels. Each ad is a book cover with the platform ink of the source volume.</p>
+          <p class="caption" style="margin-top: 16px;">CHANNELS: Google Ads, LinkedIn Ads, Meta Ads, X Ads</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-break" data-break></div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h6>TAURUS AI CORP</h6>
+        <p>Canadian Operating Company</p>
+        <p>CBCA 1702855-5</p>
+        <p>taurusai.io</p>
+      </div>
+      <div class="footer-col">
+        <h6>VOLUMES</h6>
+        <p><span class="hint-gridera">GRIDERA</span> &mdash; q-grid.net</p>
+        <p><span class="hint-nexus">NEXUS</span> &mdash; nexus.taurusai.io</p>
+        <p><span class="hint-biofoundry">BIO-FOUNDRY</span> &mdash; bio-foundry.taurusai.io</p>
+        <p><span class="hint-defquan">DEFQUAN&#8482;</span> &mdash; Entity TBD</p>
+      </div>
+      <div class="footer-col">
+        <h6>ENTITIES</h6>
+        <p>ARQ QUANTUM LLC (Wyoming)</p>
+        <p>TAURUS AI CORP - FZCO (UAE)</p>
+        <p>TAURUS AI Corp. (Canada)</p>
+      </div>
+      <div class="footer-col">
+        <h6>SYSTEM</h6>
+        <p>tokens.json (DTCG 2025.10)</p>
+        <p>platforms/ SCSS</p>
+        <p>Oswald + Inter + Space Mono</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      White-on-black corporate canvas with <span class="hint-gridera">neon teal</span> &middot; <span class="hint-nexus">orange</span> &middot; <span class="hint-biofoundry">neon green</span> &middot; <span class="hint-defquan">red</span> volume hints. Background images animate with roll + scrollmotion.
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      'use strict';
+
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // --- HEADER REVEAL ---
+      var header = document.getElementById('header');
+      var lastScrollY = 0;
+
+      function updateHeader(scrollY) {
+        if (scrollY > 100) {
+          header.classList.add('visible');
+        } else {
+          header.classList.remove('visible');
+        }
+      }
+
+      // --- REVEAL ON SCROLL (IntersectionObserver) ---
+      var revealEls = document.querySelectorAll('.reveal');
+      var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+      revealEls.forEach(function(el) { revealObserver.observe(el); });
+
+      // --- PAGE BREAK DRAW ---
+      var breaks = document.querySelectorAll('[data-break]');
+      var breakObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            breakObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      breaks.forEach(function(el) { breakObserver.observe(el); });
+
+      // --- BACKGROUND IMAGE LAYER ACTIVATION ---
+      var bgLayers = document.querySelectorAll('.bg-img-layer');
+      var bgObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      bgLayers.forEach(function(el) { bgObserver.observe(el); });
+
+      // --- SCROLL PARALLAX (scrollmotion) ---
+      // Each background image layer translates based on its section's scroll position
+      var sections = document.querySelectorAll('.edition-section');
+
+      function updateScrollMotion() {
+        if (prefersReducedMotion) return;
+
+        var scrollY = window.scrollY;
+        var viewportH = window.innerHeight;
+
+        sections.forEach(function(section) {
+          var bgLayer = section.querySelector('.bg-img-layer');
+          if (!bgLayer) return;
+
+          var bgImg = bgLayer.querySelector('.bg-img');
+          if (!bgImg) return;
+
+          var rect = section.getBoundingClientRect();
+          var sectionTop = rect.top + scrollY;
+          var sectionH = rect.height;
+
+          // Parallax: as the section scrolls through the viewport, translate the bg image
+          var progress = (scrollY - sectionTop + viewportH) / (sectionH + viewportH);
+          progress = Math.max(0, Math.min(1, progress));
+
+          // Translate from -8% to +8% as the section passes through
+          var parallaxY = (progress - 0.5) * 16;
+          var scale = 1.08 + progress * 0.04;
+
+          var rotX = (progress - 0.5) * 4;
+          bgImg.style.transform = 'translateY(' + parallaxY + '%) translateZ(' + (progress * 30) + 'px) rotateX(' + rotX + 'deg) scale(' + scale + ')';
+        });
+      }
+
+      // --- THROTTLED SCROLL ---
+      var ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            var scrollY = window.scrollY;
+            updateHeader(scrollY);
+            updateScrollMotion();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateScrollMotion, { passive: true });
+
+      // Initial call
+      updateHeader(window.scrollY);
+      updateScrollMotion();
+
+      // --- SMOOTH NAV CLICKS ---
+      document.querySelectorAll('.site-header nav a').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          var targetId = link.getAttribute('href').slice(1);
+          var target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

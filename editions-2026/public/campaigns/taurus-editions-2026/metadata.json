@@ -1,0 +1,73 @@
+{
+  "campaignId": "taurus-editions-2026",
+  "client": "TAURUS AI Corp.",
+  "vertical": "enterprise-design-system",
+  "archetype": "industrial-editorial",
+  "category": "landing-page",
+  "createdAt": "2026-08-03",
+  "status": "ready-for-review",
+  "brand": "TAURUS EDITIONS 2026",
+  "assets": [
+    {
+      "type": "landing-page",
+      "path": "/index.html",
+      "mime": "text/html"
+    },
+    {
+      "type": "infographic",
+      "path": "/campaigns/taurus-editions-2026/infographic.html",
+      "mime": "text/html"
+    },
+    {
+      "type": "landing-page",
+      "path": "/campaigns/taurus-editions-2026/preview.html",
+      "mime": "text/html"
+    },
+    {
+      "type": "design-tokens",
+      "path": "/campaigns/taurus-editions-2026/tokens.json",
+      "mime": "application/json"
+    },
+    {
+      "type": "react-spec",
+      "path": "/campaigns/taurus-editions-2026/design-taste-frontend-v1.tar",
+      "mime": "application/x-tar"
+    },
+    {
+      "type": "gsap-variant",
+      "path": "/campaigns/taurus-editions-2026/gpt-taste.tar",
+      "mime": "application/x-tar"
+    },
+    {
+      "type": "ascii-video",
+      "path": "/campaigns/taurus-editions-2026/taurus_editions_ascii_5s.mp4",
+      "mime": "video/mp4"
+    },
+    {
+      "type": "pdf-pipeline",
+      "path": "/campaigns/taurus-editions-2026/brand-aware-document-pdf-pipeline.tar",
+      "mime": "application/x-tar"
+    }
+  ],
+  "metadata": {
+    "platforms": [
+      "GRIDERA",
+      "NEXUS",
+      "BIO-FOUNDRY",
+      "DEFQUAN"
+    ],
+    "colors": {
+      "void": "#080A0F",
+      "parchment": "#F4F0E8",
+      "gridera": "#00F0FF",
+      "nexus": "#FF8C42",
+      "biofoundry": "#39FF14",
+      "defquan": "#FF3B30"
+    },
+    "fonts": [
+      "Oswald",
+      "Inter",
+      "Space Mono"
+    ]
+  }
+}
