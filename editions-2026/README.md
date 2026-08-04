@@ -1,7 +1,7 @@
-# editions-2026 (source archive)
+# TAURUS EDITIONS 2026 — Source Archive
 
-This folder contains the source HTML/assets for the TAURUS EDITIONS 2026 campaign site.
+This folder is the source archive for the TAURUS EDITIONS 2026 campaign microsite.
 
-The live deployment is integrated into the main Next.js app via `public/editions-2026/`.
+The live deployment copy lives in `public/editions-2026/` and is served as static files by the Next.js app.
 
-Live URL: https://taurusai.io/editions-2026/
+Edit files here, then copy to `public/editions-2026/` and commit.
