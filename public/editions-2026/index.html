@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAURUS AI — Industrial Quantum-Safe Platforms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void: #080A0F;
+      --parchment: #F4F0E8;
+      --ink: #1A1D24;
+      --muted: #6B7280;
+      --gridera: #00F0FF;
+      --nexus: #FF8C42;
+      --bio: #39FF14;
+      --defquan: #FF3B30;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--void);
+      color: var(--parchment);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Global scroll background video */
+    #global-bg {
+      position: fixed; inset: 0; z-index: -2;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0.5; filter: saturate(0.65) contrast(1.2);
+    }
+    #global-bg-overlay {
+      position: fixed; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, rgba(8,10,15,0.35) 0%, rgba(8,10,15,0.82) 100%);
+      pointer-events: none;
+    }
+
+    /* Noise + scanlines */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid rgba(244,240,232,0.08);
+      background: rgba(8,10,15,0.85);
+      backdrop-filter: blur(12px);
+      transform: translateY(-100%);
+      transition: transform 0.4s var(--ease);
+    }
+    nav.visible { transform: translateY(0); }
+    .logo { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 500; letter-spacing: 0.08em; }
+    .nav-links { display: flex; gap: 40px; }
+    .nav-links a { color: var(--parchment); text-decoration: none; font-size: 13px; font-weight: 500; opacity: 0.7; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border: 1px solid rgba(244,240,232,0.2);
+      background: transparent; color: var(--parchment); font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: all 0.3s var(--ease); cursor: pointer; letter-spacing: 0.02em;
+    }
+    .btn:hover { background: var(--parchment); color: var(--void); }
+    .btn-primary { background: var(--parchment); color: var(--void); }
+    .btn-primary:hover { background: transparent; color: var(--parchment); }
+
+    /* HERO */
+    .hero {
+      min-height: 100dvh;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 160px 48px 80px;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(8,10,15,0.45) 0%, rgba(8,10,15,0.7) 60%, var(--void) 100%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .eyebrow {
+      font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted);
+      letter-spacing: 0.15em; margin-bottom: 24px;
+    }
+    h1 {
+      font-family: 'Oswald', sans-serif; font-size: clamp(56px, 8vw, 120px);
+      font-weight: 500; line-height: 0.95; letter-spacing: -0.02em;
+      text-transform: uppercase; max-width: 1100px;
+    }
+    .hero p {
+      margin-top: 32px; color: var(--muted); font-size: 18px; max-width: 560px; line-height: 1.6;
+    }
+    .hero-actions { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted);
+      letter-spacing: 0.1em; z-index: 2;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* PLATFORM SECTIONS — sticky scroll media */
+    .platform-section {
+      position: relative;
+      min-height: 160dvh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      overflow: hidden;
+    }
+    .platform-media {
+      position: sticky; top: 0; height: 100dvh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .platform-media video,
+    .platform-media img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: saturate(0.85) contrast(1.1);
+    }
+    .platform-media::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--void) 0%, transparent 30%, transparent 70%, var(--void) 100%);
+      pointer-events: none;
+    }
+    .platform-content {
+      position: relative; z-index: 2;
+      padding: 140px 64px;
+      max-width: 640px;
+    }
+    .platform-label {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      letter-spacing: 0.15em; margin-bottom: 24px;
+    }
+    .platform-content h2 {
+      font-family: 'Oswald', sans-serif; font-size: clamp(40px, 5vw, 72px);
+      font-weight: 500; line-height: 0.98; text-transform: uppercase; margin-bottom: 32px;
+    }
+    .platform-content p { color: var(--muted); font-size: 17px; line-height: 1.65; margin-bottom: 24px; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .feature-list li {
+      font-size: 14px; color: var(--parchment); padding-left: 20px; position: relative;
+    }
+    .feature-list li::before {
+      content: '—'; position: absolute; left: 0; color: var(--muted);
+    }
+
+    .gridera .platform-label { color: var(--gridera); }
+    .gridera h2 { color: var(--gridera); }
+    .nexus .platform-label { color: var(--nexus); }
+    .nexus h2 { color: var(--nexus); }
+    .bio .platform-label { color: var(--bio); }
+    .bio h2 { color: var(--bio); }
+    .defquan .platform-label { color: var(--defquan); }
+    .defquan h2 { color: var(--defquan); }
+
+    /* 3D tilt panel for DEFQUAN */
+    .tilt-stage {
+      perspective: 1200px;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tilt-panel {
+      width: 90%; height: 80%;
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(255,59,48,0.3);
+      transform-style: preserve-3d;
+      transform: rotateY(-8deg) rotateX(4deg);
+      transition: transform 0.1s linear;
+      box-shadow: 0 60px 120px rgba(0,0,0,0.6);
+    }
+    .tilt-panel img,
+    .tilt-panel video { width: 100%; height: 100%; object-fit: cover; }
+
+    /* TRANSITION DIVIDERS */
+    .transition-bar {
+      height: 1px; background: rgba(244,240,232,0.12);
+      position: relative;
+    }
+    .transition-bar::before {
+      content: '';
+      position: absolute; left: 50%; top: -3px; transform: translateX(-50%);
+      width: 6px; height: 6px; border-radius: 50%; background: var(--parchment);
+    }
+
+    /* STATS */
+    .stats {
+      padding: 120px 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+      border-top: 1px solid rgba(244,240,232,0.08); border-bottom: 1px solid rgba(244,240,232,0.08);
+    }
+    .stat h3 {
+      font-family: 'Oswald', sans-serif; font-size: 56px; font-weight: 500;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .stat p { font-size: 13px; color: var(--muted); }
+
+    /* CTA */
+    .cta {
+      padding: 200px 48px; text-align: center;
+      background: radial-gradient(circle at 50% 50%, rgba(244,240,232,0.05) 0%, transparent 55%);
+    }
+    .cta h2 {
+      font-family: 'Oswald', sans-serif; font-size: clamp(48px, 7vw, 104px);
+      font-weight: 500; text-transform: uppercase; line-height: 1.0;
+    }
+    .cta p { color: var(--muted); margin-top: 24px; font-size: 18px; }
+    .cta-actions { margin-top: 48px; display: flex; justify-content: center; gap: 16px; }
+
+    footer {
+      padding: 48px; border-top: 1px solid rgba(244,240,232,0.08);
+      display: flex; justify-content: space-between; color: var(--muted); font-size: 12px;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+
+    @media (max-width: 1024px) {
+      .platform-section { grid-template-columns: 1fr; min-height: auto; }
+      .platform-media { position: relative; height: 60dvh; order: -1; }
+      .platform-media::after { background: linear-gradient(180deg, var(--void) 0%, transparent 20%, transparent 80%, var(--void) 100%); }
+      .platform-content { padding: 80px 24px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 640px) {
+      .hero, .platform-content, .stats, .cta, footer { padding-left: 24px; padding-right: 24px; }
+      .stats { grid-template-columns: 1fr; }
+      .hero-actions, .cta-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <video id="global-bg" autoplay muted loop playsinline src="/editions-2026/assets/corporate-ink.mp4"></video>
+  <div id="global-bg-overlay"></div>
+
+  <nav id="nav">
+    <div class="logo">TAURUS AI</div>
+    <div class="nav-links">
+      <a href="#gridera">GRIDERA</a>
+      <a href="#nexus">NEXUS</a>
+      <a href="#bio">BIO-FOUNDRY</a>
+      <a href="#defquan">DEFQUAN</a>
+    </div>
+    <a class="btn btn-primary" href="#contact">Request demo</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">TAURUS AI CORP · 2026</div>
+      <h1>Industrial platforms for a quantum-safe world.</h1>
+      <p>GRIDERA, NEXUS, BIO-FOUNDRY and DEFQUAN. One design language. Four sovereign product lines. Built for the regulated enterprise.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#gridera">Explore platforms</a>
+        <a class="btn" href="/editions-2026/campaigns/taurus-editions-2026/tokens.json">View design tokens</a>
+      </div>
+    </div>
+    <div class="scroll-hint">SCROLL TO EXPLORE</div>
+  </section>
+
+  <div class="transition-bar"></div>
+
+  <!-- GRIDERA -->
+  <section id="gridera" class="platform-section gridera">
+    <div class="platform-media">
+      <video autoplay muted loop playsinline src="/editions-2026/assets/gridera-section-bg.mp4"></video>
+    </div>
+    <div class="platform-content">
+      <div class="platform-label">/// GRIDERA</div>
+      <h2>Post-Quantum Compliance Infrastructure</h2>
+      <p>GRIDERA turns NIST FIPS 203/204, EU AI Act and SWIFT CSP 2027 mandates into executable compliance programs. ML-DSA-65, ML-KEM-768 and Hedera HCS anchoring are production-ready.</p>
+      <ul class="feature-list">
+        <li>GRIDERA|Scan — free public PQC vulnerability scan</li>
+        <li>GRIDERA|Comply — assessments, CBOM, jurisdiction cells</li>
+        <li>GRIDERA|Guard — PQC-signed LLM guardrails</li>
+        <li>GRIDERA|Migrate — autonomous crypto migration</li>
+      </ul>
+      <div style="margin-top:40px;">
+        <a class="btn btn-primary" href="https://q-grid.net">Go to GRIDERA</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="transition-bar"></div>
+
+  <!-- NEXUS -->
+  <section id="nexus" class="platform-section nexus">
+    <div class="platform-content">
+      <div class="platform-label">/// NEXUS</div>
+      <h2>Agentic Creative Studio & Campaign Publishing</h2>
+      <p>Nexus Social and Nexus Creative are shipping. From research brief to social carousel, video script, landing page and paid ad — one orchestrated pipeline.</p>
+      <ul class="feature-list">
+        <li>Nexus Social — multi-platform content scheduling</li>
+        <li>Nexus Creative — AI campaign asset generation</li>
+        <li>Nexus Intel — business intelligence feeds</li>
+        <li>Nexus Flow — agent workflow orchestration</li>
+      </ul>
+      <div style="margin-top:40px;">
+        <a class="btn btn-primary" href="https://nexus.taurusai.io">Go to NEXUS</a>
+      </div>
+    </div>
+    <div class="platform-media">
+      <video autoplay muted loop playsinline src="/editions-2026/assets/nexus-flow.mp4"></video>
+    </div>
+  </section>
+
+  <div class="transition-bar"></div>
+
+  <!-- BIO-FOUNDRY -->
+  <section id="bio" class="platform-section bio">
+    <div class="platform-media">
+      <video autoplay muted loop playsinline src="/editions-2026/assets/biofoundry-cell.mp4"></video>
+    </div>
+    <div class="platform-content">
+      <div class="platform-label">/// BIO-FOUNDRY</div>
+      <h2>Neuro-Acoustic Coherence Research Platform</h2>
+      <p>8-channel EEG + HRV pediatric ADHD prodrome detection. The PAC Engine, GCR-Pulse library and taurus-gcfd-tracker are the public shipping artifacts.</p>
+      <ul class="feature-list">
+        <li>8-channel EEG + HRV wearable stack</li>
+        <li>PAC Engine — theta-gamma phase-amplitude coupling</li>
+        <li>GCR-Pulse streaming API</li>
+        <li>Open-source taurus-gcfd-tracker</li>
+      </ul>
+      <div style="margin-top:40px;">
+        <a class="btn btn-primary" href="https://bio-foundry.taurusai.io">Go to BIO-FOUNDRY</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="transition-bar"></div>
+
+  <!-- DEFQUAN -->
+  <section id="defquan" class="platform-section defquan">
+    <div class="platform-content">
+      <div class="platform-label">/// DEFQUAN</div>
+      <h2>Dual-Use Tactical Defence PQC Layer</h2>
+      <p>TRL 2-3 architecture phase. Offline mesh, Arctic C4ISR telemetry signing, and TRESOR hardware root-of-trust for comms-denied operations.</p>
+      <ul class="feature-list">
+        <li>Arctic C4ISR tactical telemetry signing</li>
+        <li>Offline mesh: Bluetooth → NFC → QR → SMS/USSD</li>
+        <li>TRESOR — keys in CPU debug registers, never RAM</li>
+        <li>Air-gapped GGUF edge inference on NVIDIA Orin NX</li>
+      </ul>
+      <div style="margin-top:40px;">
+        <a class="btn btn-primary" href="#contact">Request defence brief</a>
+      </div>
+    </div>
+    <div class="platform-media">
+      <div class="tilt-stage">
+        <div class="tilt-panel" id="defquanPanel">
+          <img src="/editions-2026/assets/defquan-topology.jpg" alt="DEFQUAN tactical network topology">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="transition-bar"></div>
+
+  <section class="stats">
+    <div class="stat">
+      <h3>4</h3>
+      <p>Sovereign product platforms</p>
+    </div>
+    <div class="stat">
+      <h3>105+</h3>
+      <p>Verified GRIDERA tests</p>
+    </div>
+    <div class="stat">
+      <h3>8</h3>
+      <p>Jurisdiction cells</p>
+    </div>
+    <div class="stat">
+      <h3>3</h3>
+      <p>Operating entities</p>
+    </div>
+  </section>
+
+  <section id="contact" class="cta">
+    <h2>Deploy the system.</h2>
+    <p>Ship TAURUS EDITIONS 2026 across every campaign surface and jurisdiction cell.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="mailto:hello@taurusai.io">Contact sales</a>
+      <a class="btn" href="https://q-grid.net">Try GRIDERA</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 TAURUS AI Corp. · ARQ QUANTUM LLC · TAURUS AI CORP - FZCO</div>
+    <div class="footer-links">
+      <a href="https://q-grid.net">q-grid.net</a>
+      <a href="https://nexus.taurusai.io">nexus.taurusai.io</a>
+      <a href="https://bio-foundry.taurusai.io">bio-foundry.taurusai.io</a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+    }, { passive: true });
+
+    const panel = document.getElementById('defquanPanel');
+    window.addEventListener('scroll', () => {
+      const rect = panel.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const vh = window.innerHeight;
+      const progress = (vh - center) / vh;
+      const rotateY = -8 + progress * 16;
+      const rotateX = 4 - progress * 8;
+      panel.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+    }, { passive: true });
+  </script>
+</body>
+</html>

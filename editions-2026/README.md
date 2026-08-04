@@ -1,22 +1,7 @@
-# taurus-ai-corp-website
+# editions-2026 (source archive)
 
-TAURUS AI Corp corporate website — TAURUS EDITIONS 2026.
+This folder contains the source HTML/assets for the TAURUS EDITIONS 2026 campaign site.
 
-- Live preview: `npm run dev` → http://127.0.0.1:8792/
-- Build: `npm run build` → outputs `dist/`
-- Test: `npm run test` → verifies no broken local asset references
+The live deployment is integrated into the main Next.js app via `public/editions-2026/`.
 
-## Deploy
-
-### Cloudflare Pages (connected to Taurus-Ai-Corp/taurus-ai-corp-website)
-
-```bash
-npm run build
-npm run deploy:cf
-```
-
-### Vercel fallback
-
-```bash
-npm run deploy:vercel
-```
+Live URL: https://taurusai.io/editions-2026/
