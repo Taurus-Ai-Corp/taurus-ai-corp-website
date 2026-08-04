@@ -2,32 +2,20 @@
   "version": 2,
   "routes": [
     {
-      "src": "/api/omni/(.*)",
-      "dest": "/api/omni/$1"
-    },
-    {
-      "src": "/api/campaigns",
+      "src": "/editions-2026/api/campaigns",
       "dest": "/api/campaigns.js"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/editions-2026/api/campaign-pipeline",
+      "dest": "/api/campaign-pipeline.js"
     },
     {
-      "src": "/campaigns/(.*)",
-      "dest": "/campaigns/$1"
+      "src": "/editions-2026/api/omni/brief",
+      "dest": "/api/omni/brief.js"
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/robots.txt",
-      "dest": "/robots.txt"
+      "src": "/editions-2026/(.*)",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",
