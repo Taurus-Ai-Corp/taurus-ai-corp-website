@@ -30,10 +30,10 @@ export const FooterSection = () => {
             </div>
             <div>
               <Link
-                href="https://q-grid.net"
+                href="https://grid-era.com"
                 target="_blank"
                 className="opacity-60 hover:opacity-100">
-                Q-Grid™
+                GRIDERA™
               </Link>
             </div>
             <div>

@@ -73,7 +73,7 @@
 
 :root {
   --radius: 0rem;
-  /* Taurus AI Corp brand — q-grid.net "bone & graphite" light theme */
+  /* Taurus AI Corp brand — gridera.net "bone & graphite" light theme */
   --background: #f5f1eb;
   --foreground: #262a2e;
   --card: #fdfcfa;
@@ -108,7 +108,7 @@
 }
 
 .dark {
-  /* Taurus AI Corp brand — q-grid.net terminal dark theme */
+  /* Taurus AI Corp brand — gridera.net terminal dark theme */
   --background: #0b0e14;
   --foreground: #e8e6de;
   --card: #10141c;
@@ -178,7 +178,7 @@
     0 2px 6px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* Taurus / q-grid brand motifs */
+/* Taurus / gridera brand motifs */
 .mono-label {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   text-transform: uppercase;

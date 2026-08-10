@@ -13,7 +13,7 @@ export const benefitList: BenefitsProps[] = [
   },
   {
     icon: "ShieldCheck",
-    title: "Q-Grid™ — Quantum-Resistant Security",
+    title: "GRIDERA™ — Quantum-Resistant Security",
     description:
       "Post-quantum cryptography infrastructure for enterprise. ML-KEM, ML-DSA, and SLH-DSA algorithms protect your data against emerging quantum threats."
   },

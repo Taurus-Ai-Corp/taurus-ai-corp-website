@@ -30,7 +30,7 @@ export default function TermsOfServicePage() {
 
           <h2>Products & Services</h2>
           <p>
-            Descriptions of our platforms — including BizFlow™, Q-Grid™, AssetGrid™, and
+            Descriptions of our platforms — including BizFlow™, GRIDERA™, AssetGrid™, and
             Neovibe™ — are provided for general information. Access to and use of Taurus AI
             products is governed by separate written agreements between you and Taurus AI
             Corp. Nothing on this website constitutes an offer, commitment, or warranty of
