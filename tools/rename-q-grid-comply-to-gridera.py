@@ -34,10 +34,11 @@ REPLACEMENTS = [
     ("Q-GRID|COMPLY", "GRIDERA|COMPLY"),
     ("Q-Grid|comply", "GRIDERA|Comply"),
     ("q-grid|comply", "gridera|comply"),
-    # Space variants
-    ("Q-Grid Comply", "GRIDERA Comply"),
-    ("Q-GRID COMPLY", "GRIDERA COMPLY"),
-    ("Q-Grid comply", "GRIDERA Comply"),
+    # Space variants -> pipe form. The space-separated GRIDERA form is itself a
+    # brand violation (fixed 2026-09-25; these used to emit it).
+    ("Q-Grid Comply", "GRIDERA|Comply"),  # brand-allow: rename input
+    ("Q-GRID COMPLY", "GRIDERA|COMPLY"),
+    ("Q-Grid comply", "GRIDERA|Comply"),
     # Slash variant
     ("Q-Grid/Comply", "GRIDERA/Comply"),
     ("Q-GRID/COMPLY", "GRIDERA/COMPLY"),
@@ -65,10 +66,46 @@ REPLACEMENTS = [
     ("q-grid", "gridera"),
     ("qgrid", "gridera"),
     # Banned concept names
-    ("Quantum-Grid-Mesh", "GRIDERA"),
-    ("Quantum Grid", "GRIDERA"),
+    ("Quantum-Grid-Mesh", "GRIDERA"),  # brand-allow: rename input
+    ("Quantum Grid", "GRIDERA"),  # brand-allow: rename input
     ("Quantum-Grid", "GRIDERA"),
 ]
+
+# FROZEN infrastructure — must survive every replacement above untouched.
+# Added 2026-09-25: the bare ("q-grid", "gridera") pairs were rewriting production
+# hosts (q-grid.in -> gridera.in, in.q-grid.net -> in.gridera.net, and gridera.net
+# is a DEAD domain) despite the header saying other q-grid.* domains are not
+# migrated. Source: [frozen] in ~/.ai-context/taxonomy/TAXONOMY.toml.
+# Only the q-grid.net APEX and www.q-grid.net are migrated (to grid-era.com);
+# every q-grid.net SUBDOMAIN and every q-grid.in / q-grid.ca host is frozen.
+FROZEN_PATTERNS = [
+    # any host under q-grid.in or q-grid.ca, apex included (rupee.q-grid.in, q-arq.q-grid.ca)
+    re.compile(r"(?<![A-Za-z0-9.-])(?:[A-Za-z0-9-]+\.)*q-grid\.(?:in|ca)(?![A-Za-z0-9])"),
+    # q-grid.net subdomains other than www (eu/ca/na/in/ae.q-grid.net)
+    re.compile(r"(?<![A-Za-z0-9.-])(?!www\.)(?:[A-Za-z0-9-]+\.)+q-grid\.net(?![A-Za-z0-9])"),
+    # CI environment and secret names
+    re.compile(r"q-grid-in-production|VERCEL_Q_GRID_IN_PROJECT_ID"),
+]
+
+
+def _mask_frozen(text: str) -> tuple[str, list[str]]:
+    """Swap frozen tokens for placeholders no replacement pair can match."""
+    saved: list[str] = []
+
+    def stash(m: re.Match) -> str:
+        saved.append(m.group(0))
+        return f"\x00FROZEN{len(saved) - 1}\x00"
+
+    for pat in FROZEN_PATTERNS:
+        text = pat.sub(stash, text)
+    return text, saved
+
+
+def _unmask_frozen(text: str, saved: list[str]) -> str:
+    for i, tok in enumerate(saved):
+        text = text.replace(f"\x00FROZEN{i}\x00", tok)
+    return text
+
 
 # Directories to skip entirely
 SKIP_DIRS = {
@@ -117,24 +154,25 @@ def should_skip_file(path: Path) -> bool:
 
 def replace_in_text(text: str) -> tuple[str, int]:
     """Apply all replacements; return (new_text, num_replacements)."""
+    text, saved = _mask_frozen(text)
     total = 0
     for old, new in REPLACEMENTS:
         count = text.count(old)
         if count:
             text = text.replace(old, new)
             total += count
-    return text, total
+    return _unmask_frozen(text, saved), total
 
 
 def rename_filename(name: str) -> str:
     """Apply slug replacements to filename. Pure transform."""
-    new = name
+    new, saved = _mask_frozen(name)
     for old, new_form in REPLACEMENTS:
         # Skip pipe-variants in filenames (filesystems generally hate pipes)
         if "|" in old:
             continue
         new = new.replace(old, new_form)
-    return new
+    return _unmask_frozen(new, saved)
 
 
 def process_root(root: Path, dry_run: bool):
