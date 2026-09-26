@@ -39,7 +39,7 @@ export const productList: ProductProps[] = [
     description: "AI-powered workflow automation for complex business processes."
   },
   {
-    title: "Q-Grid™",
+    title: "GRIDERA™",
     icon: "ShieldCheck",
     description: "Post-quantum cryptography infrastructure for enterprise."
   },
