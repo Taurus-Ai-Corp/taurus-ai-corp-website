@@ -73,8 +73,8 @@ REPLACEMENTS = [
 
 # FROZEN infrastructure — must survive every replacement above untouched.
 # Added 2026-09-25: the bare ("q-grid", "gridera") pairs were rewriting production
-# hosts (q-grid.in -> gridera.in, in.q-grid.net -> in.gridera.net, and gridera.net
-# is a DEAD domain) despite the header saying other q-grid.* domains are not
+# hosts (q-grid.in -> gridera.in, in.q-grid.net -> in.gridera.net; gridera.* is
+# not a Taurus domain at all, grid-era.com is) despite the header saying other q-grid.* domains are not
 # migrated. Source: [frozen] in ~/.ai-context/taxonomy/TAXONOMY.toml.
 # Only the q-grid.net APEX and www.q-grid.net are migrated (to grid-era.com);
 # every q-grid.net SUBDOMAIN and every q-grid.in / q-grid.ca host is frozen.
